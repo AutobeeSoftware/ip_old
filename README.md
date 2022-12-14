@@ -27,9 +27,9 @@ Görüntü işleme ekibinin genel kullanım reposu
  
  **Not: [linkte](https://drive.google.com/drive/folders/1nKmVCxBSypSwk9cAXrEaI1rCMY-WhLF9?usp=sharing) gerekli videoları bulabilirsiniz**
  
- /images/Ekran_Resmi_2022-07-24_15.00.13.png
- 
- /images/out_6 (1).jpg
+ ![örnek1](https://github.com/AutobeeSoftware/IP_general/blob/main/images/Ekran_Resmi_2022-07-24_15.00.13.png)
+
+ ![örnek2](https://github.com/AutobeeSoftware/IP_general/blob/main/images/out_6.jpg)
  
  
 </details>
