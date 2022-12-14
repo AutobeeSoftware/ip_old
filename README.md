@@ -1,5 +1,5 @@
 # IP_general
-Repo for general purpose of image proccess crew
+Görüntü işleme ekibinin genel kullanım reposu
 
 ## Ödevler
 
