@@ -12,7 +12,7 @@ Repo for general purpose of image proccess crew
   
   -_Not: Kenar açıları üzerine bir fonksiyon yazabilirsiniz_
 
--Hazırladığınız kodları ve aldığınız outputları yükleyin (görsel ve video kaydetme fonksiyonlarına bakın) veya bana yüz yüze de gösterebilirsiniz
+-**_Hazırladığınız kodları ve aldığınız outputları yükleyin (görsel ve video kaydetme fonksiyonlarına bakın) veya bana yüz yüze de gösterebilirsiniz_**
   
--Kullandığınız görselleri de bir klasör olarak kendi dizininizin içinde odev1 klasörüne kodlarınızla beraber yükleyin
+-**_Kullandığınız görselleri de bir klasör olarak kendi dizininizin içinde odev1 klasörüne kodlarınızla beraber yükleyin_**
 
