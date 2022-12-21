@@ -42,4 +42,4 @@ Görüntü işleme ekibinin genel kullanım reposu
  - **_Hazırladığınız kodları ve aldığınız outputları yükleyin (görsel ve video kaydetme fonksiyonlarına bakın) veya bana yüz yüze de gösterebilirsiniz_**  
  + **_Kullandığınız görselleri de bir klasör olarak kendi dizininizin içinde odev1 klasörüne kodlarınızla beraber yükleyin_**
  
- **Not: [eğitim linki](https://www.udemy.com/share/103Gkr3@JjTJ4OZbMsWhmQGHL-cSr9GYfgUXVLtEoRGPWDLKcDbnCpk9KjMYJOFCeO79wALgTA==/)**
+ **Not: [eğitim linki](https://www.udemy.com/course/master-deep-learning-computer-visiontm-cnn-ssd-yolo-gans/)**
