@@ -9,7 +9,7 @@ Görüntü işleme ekibinin genel kullanım reposu
  - Biri görsel üzerinden çalışan biri video üzerinden çalışan iki farklı script yazınız.
    - _Not:Görselleri kendiniz bulmanız lazım._
  - Önceki yazdığınız kodları güncelleyerek düzgün çokgenleri tanıyabilir hale getirin (kare, düzgün altıgen, düzgün üçgen)  
-   - _Not: Kenar açıları üzerine bir fonksiyon yazabilirsiniz_
+   - _Not: Kosinüs teoremi yardımıyla kenar açıları üzerine bir fonksiyon yazabilirsiniz_
   
  - **_Hazırladığınız kodları ve aldığınız outputları yükleyin (görsel ve video kaydetme fonksiyonlarına bakın) veya bana yüz yüze de gösterebilirsiniz_**  
  - **_Kullandığınız görselleri de bir klasör olarak kendi dizininizin içinde odev1 klasörüne kodlarınızla beraber yükleyin_**
