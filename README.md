@@ -34,7 +34,7 @@ Görüntü işleme ekibinin genel kullanım reposu
  
 </details>
  
-<details><summary>Ödev3</summary>
+<details><summary>/Ödev3(şimdilik gerekli değil ödev2 bitince haber verin)/</summary>
 
  - Udemy yolo eğitimiminin tamamlayın (autobee udemy hesabı takım whatsapp genel grubunun açıklama kısmında)
    - Eğitimde kodları siz de yazarak ilerleyin ve kendi dizininiz içinde kullandığınız dosyaları kodları kısaca eğitimle ilgili her şeyi yükleyin
