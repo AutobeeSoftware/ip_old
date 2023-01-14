@@ -31,10 +31,22 @@ Görüntü işleme ekibinin genel kullanım reposu
 
  ![örnek2](https://github.com/AutobeeSoftware/IP_general/blob/main/images/out_6.jpg)
  
+ </details>
  
+<details><summary>Ödev3</summary>
+
+ - Aşağıdaki videodan yardım alarak images/testt_hsv görsellerini kullanarak bir çizgi tespit kodu yazınız
+ - Kodun doğruluğunu images/validd_hsv deki görselleri kullanarak test ediniz
+  
+ - **_Hazırladığınız kodları ve aldığınız outputları yükleyin (görsel ve video kaydetme fonksiyonlarına bakın) veya bana yüz yüze de gösterebilirsiniz_**  
+ + **_Kullandığınız görselleri de bir klasör olarak kendi dizininizin içinde odev3 klasörüne kodlarınızla beraber yükleyin_**
+ 
+ **Not: [videolink]https://www.youtube.com/watch?v=eLTLtUVuuy4&list=LL&index=5&t=469s**
+
+
 </details>
  
-<details><summary>/Ödev3(şimdilik gerekli değil ödev2 bitince haber verin)/</summary>
+<details><summary>/Ödev?(şimdilik gerekli değil ödev2 bitince haber verin)/</summary>
 
  - Udemy yolo eğitimiminin tamamlayın (autobee udemy hesabı takım whatsapp genel grubunun açıklama kısmında)
    - Eğitimde kodları siz de yazarak ilerleyin ve kendi dizininiz içinde kullandığınız dosyaları kodları kısaca eğitimle ilgili her şeyi yükleyin
