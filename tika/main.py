@@ -48,32 +48,12 @@ def bounding_box(mask):
                     # cv2.rectangle(img, (x, y), (x + w, y + h), (0,0,255), 2)
                     obj_area = cv2.contourArea(sorted_contours[0])
 
-                    radius = w / 2
-                    if radius < h / 2:
-                        radius = h / 2
-
-                    circle_area = 3.14 * (radius ** 2)
-                    sf = obj_area / circle_area
-
-                    print("possible object found")
-                    print("object area= {}".format(obj_area))
-                    print("radius= {}".format(radius))
-                    print("circle area = {}".format(circle_area))
-                    print("sf value = {}".format(sf))
+                    
 
                     gX = int(x + (w / 2))
                     gY = int(y + (h / 2))
 
 
-                    isCircleEnough = sf > 0.4 and sf < 1.5
-
-                    if isCircleEnough == True:
-                        print("object found")
-                        return [x, y, w, h, int(radius * 2), gX, gY, sorted_contours]
-
-                    else:
-                        print("popped")
-                        sorted_contours.pop(0)
                 except:
                     return None
 
@@ -83,13 +63,9 @@ def bounding_box(mask):
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-cap = cv2.VideoCapture("/Users/emirysaglam/Desktop/gölet_video/golet_3.mp4")
+cap = cv2.VideoCapture("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/result1.png")
 
-"""# resizing image for faster runtime
-scale_percent = 20
-dim = (int(width * scale_percent / 100), int(height * scale_percent / 100))
-img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
-"""
+
 prev_frame_time = 0
 # used to record the time at which we processed current frame
 new_frame_time = 0
