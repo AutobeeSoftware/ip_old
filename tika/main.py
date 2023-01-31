@@ -6,8 +6,11 @@ import matplotlib.pyplot as plt
 
 # hue values must be discrete
 
-lower_blue = np.array([130, 74, 230])
-upper_blue = np.array([185, 170, 255])
+lower_green = np.array([76,31,56])
+upper_green = np.array([104,62,30])
+
+lower_red = np.array([24,65,78])
+upper_red = np.array([9,92,65])
 
 
 def masking(img, lower_hsv, upper_hsv):
@@ -30,39 +33,74 @@ def masking(img, lower_hsv, upper_hsv):
 def bounding_box(mask):
     # try:
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-
+    params = []
     if len(contours) > 0:
-        sorted_contours = sorted(contours, key=cv2.contourArea, reverse=True)
-        obj_area = cv2.contourArea(sorted_contours[0])
-
-        if obj_area > 100:
-            flag = 1
-            while flag == 1:
-                # M = cv2.moments(sorted_contours[0])
-                # #finding biggest area's center
-                # gX = int(M["m10"] / M["m00"])
-                # gY = int(M["m01"] / M["m00"])
-                try:
-                    # finding minimum enclosing circle and bounding box
-                    x, y, w, h = cv2.boundingRect(sorted_contours[0])
-                    # cv2.rectangle(img, (x, y), (x + w, y + h), (0,0,255), 2)
-                    obj_area = cv2.contourArea(sorted_contours[0])
-
-                    
-
-                    gX = int(x + (w / 2))
-                    gY = int(y + (h / 2))
-
-
-                except:
-                    return None
-
+        
+        for c in contours:
+            obj_area = cv2.contourArea(c)
+            
+            if obj_area > 10:
+                x,y,w,h = cv2.boundingRect(c)
+                params.append([(x,y),(w+x,h+y)])
+                
+            else:
+                print("no object found bigger than treshold")
+                return None
+        return params
+    
     else:
-        print("none")
+        print("no contour found")
         return None
+
+
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
+
+image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/result1.png")
+
+width = image.shape[1]
+height = image.shape[0]
+
+print(str(width)+"x",str(height))
+
+mask_red = masking(image, lower_red, upper_red)
+wild_herbs = bounding_box(mask_red)
+
+
+mask_green = masking(image, lower_green, upper_green)
+herbs= bounding_box(mask_green)
+
+
+try:
+
+    #for i in herbs:
+    #    cv2.rectangle(image, i[0], i[1], (0,255,0), 2)
+
+    #for j in wild_herbs:
+    #    cv2.rectangle(image, j[0], j[1], (255,0,0), 2)
+
+    cv2.imshow("Image", image)
+    
+    cv2.imshow("herb", mask_green)
+    cv2.imshow("wildherb", mask_red)
+
+    
+except:
+    pass
+
+
+cv2.waitKey(0)
+
+cv2.destroyAllWindows()
+
+
+
+
+
+
+#########video
+"""
 cap = cv2.VideoCapture("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/result1.png")
 
 
@@ -103,3 +141,4 @@ while True:
     cv2.waitKey(0)
 
 cv2.destroyAllWindows()
+"""
