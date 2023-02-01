@@ -8,11 +8,12 @@ import matplotlib.pyplot as plt
 # hue values must be discrete
 
 
-lower_green = np.array([40,40,50])
-upper_green = np.array([110,255,180])
+lower_green = np.array([48,38,50])
+upper_green = np.array([77,180,180])
 
-lower_red = np.array([5,100,110])
-upper_red = np.array([30,210,200])
+lower_red = np.array([0,88,30])
+upper_red = np.array([20,255,255])
+
 
 
 
@@ -62,6 +63,8 @@ while True:
     cv2.putText(image, "fps: " + fps, (width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     
     cv2.imshow("Image", image)
+    cv2.imshow("red", mask_red)
+    cv2.imshow("green", mask_green)
     cv2.waitKey(1)
 
 cv2.destroyAllWindows()
