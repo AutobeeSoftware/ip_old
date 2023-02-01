@@ -36,8 +36,8 @@ while True:
     width = image.shape[1]
     height = image.shape[0]
 
-    mask_red = masking(image, lower_red, upper_red)
-    wild_herbs = bounding_box(mask_red)
+    #mask_red = masking(image, lower_red, upper_red)
+    #wild_herbs = bounding_box(mask_red)
 
 
     mask_green = masking(image, lower_green, upper_green)
@@ -48,9 +48,11 @@ while True:
         
         for i in herbs:
             cv2.rectangle(image, i[0], i[1], (0,255,0), 2)
+            cv2.putText(image, "herb", (i[1][0]+ 10, i[1][1] + 15), font, 0.7, (0,255,0), 2)
 
-        for j in wild_herbs:
-            cv2.rectangle(image, j[0], j[1], (0,0,255), 2)
+        #for j in wild_herbs:
+        #    cv2.rectangle(image, j[0], j[1], (0,0,255), 2)
+        #    cv2.putText(image, "wild herb",(j[1][0]+ 10, j[1][1] + 15),font, 0.7, (0,0,255), 2)
 
     except:
         pass
@@ -63,7 +65,7 @@ while True:
     cv2.putText(image, "fps: " + fps, (width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     
     cv2.imshow("Image", image)
-    cv2.imshow("red", mask_red)
+    #cv2.imshow("red", mask_red)
     cv2.imshow("green", mask_green)
     cv2.waitKey(1)
 

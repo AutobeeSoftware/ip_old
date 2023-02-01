@@ -15,11 +15,11 @@ def masking(img, lower_hsv, upper_hsv):
     bitw = cv2.bitwise_and(mask, mask, mask=mask)
 
     # applying opening operation
-    kernel = np.ones((2, 2), np.uint8)
+    kernel = np.ones((3, 3), np.uint8)
     opening = cv2.morphologyEx(bitw, cv2.MORPH_OPEN, kernel)
 
     # removing parasites
-    mask_f = ndimage.median_filter(opening, size=2)
+    mask_f = ndimage.median_filter(opening, size=3)
 
     return mask_f
 
@@ -30,15 +30,18 @@ def bounding_box(mask):
     params = []
     if len(contours) > 0:
         sorted_contours = sorted(contours, key=cv2.contourArea, reverse=True)
-        for c in sorted_contours[:3]:
+
+        for c in sorted_contours[:4]:
             obj_area = cv2.contourArea(c)
-            if obj_area > 60:
+            print(obj_area)
+            if obj_area > 10:
                 x, y, w, h = cv2.boundingRect(c)
                 params.append([(x, y), (w + x, h + y)])
 
             else:
                 print("no object found bigger than treshold")
                 return None
+        print("next frame")
         return params
 
     else:
