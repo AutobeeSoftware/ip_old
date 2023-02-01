@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from scipy import ndimage
 import time
-from utils import masking,bounding_box
+from utils import masking,bounding_box,intersect
 import matplotlib.pyplot as plt
 
 # hue values must be discrete
@@ -27,18 +27,19 @@ a = 0
 
 cap = cv2.VideoCapture('C:/Users/ertug/Desktop/video.mp4')
 
+red_mask_cache=[]
+green_mask_cache=[]
 
 while True:
     ret,image = cap.read()
-    
+
     if not ret:
         break
     width = image.shape[1]
     height = image.shape[0]
 
-    #mask_red = masking(image, lower_red, upper_red)
-    #wild_herbs = bounding_box(mask_red)
-
+    mask_red = masking(image, lower_red, upper_red)
+    wild_herbs = bounding_box(mask_red)
 
     mask_green = masking(image, lower_green, upper_green)
     herbs = bounding_box(mask_green)

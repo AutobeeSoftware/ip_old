@@ -47,3 +47,9 @@ def bounding_box(mask):
     else:
         print("no contour found")
         return None
+
+
+def intersect(mask1,mask2,mask3):
+    intersect0 = cv2.bitwise_and(mask1,mask2)
+    interset_3 = cv2.bitwise_and(intersect0,mask3)
+    return interset_3
