@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8db10304-841c-43a5-8b62-a8a95b812b64" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/odev_cevap/odev.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tika/hsv_find.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/hsv_find.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tika/image.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tika/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tika/video.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/video.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

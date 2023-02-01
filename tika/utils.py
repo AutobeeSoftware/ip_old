@@ -4,10 +4,13 @@ from scipy import ndimage
 import time
 
 def masking(img, lower_hsv, upper_hsv):
+    width = img.shape[1]
+    height = img.shape[0]
 
     # creating mask
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
+    cv2.rectangle(mask, (0,0), (width,int(height/4)), (0, 0, 0), -1)
 
     bitw = cv2.bitwise_and(mask, mask, mask=mask)
 

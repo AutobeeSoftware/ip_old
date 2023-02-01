@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 # hue values must be discrete
 
 
-lower_green = np.array([48,38,50])
-upper_green = np.array([77,180,180])
+lower_green = np.array([48,30,50])
+upper_green = np.array([67,180,180])
 
 lower_red = np.array([0,88,30])
 upper_red = np.array([20,255,255])
