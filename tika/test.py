@@ -3,7 +3,7 @@ import numpy as np
 from scipy import ndimage
 import time
 from utils import masking,bounding_box
-
+"""
 font = cv2.FONT_HERSHEY_SIMPLEX
 path = "C:/Users/ertug/Desktop/frame/"
 
@@ -42,3 +42,7 @@ cv2.imshow("int",intersect(mask1,mask2,mask3))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+"""
+
+arr = [1,2,3,4]
+print(arr[:4])

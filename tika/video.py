@@ -8,12 +8,19 @@ import matplotlib.pyplot as plt
 # hue values must be discrete
 
 
-lower_green = np.array([48,30,50])
+lower_green = np.array([48,80,50])
 upper_green = np.array([67,180,180])
 
-lower_red = np.array([0,88,30])
+lower_red = np.array([0,88,80])
 upper_red = np.array([20,255,255])
 
+"""
+lower_green = np.array([40,85,50])
+upper_green = np.array([70,255,255])
+
+lower_red = np.array([0,100,120])
+upper_red = np.array([10,255,255])
+        """
 
 
 
@@ -86,10 +93,9 @@ while True:
     cv2.imshow("green", mask_green)
 
 
-    k = cv2.waitKey(0)  
-    if k == ord('s'):  
-        cv2.imwrite("/Users/emirysaglam/Documents/GitHub/IP_general/tika/cumulate/" + f"{c+1}.png",frame)
-        c+=1
+    k = cv2.waitKey(1)  
+    if k == ord('q'):  
+        break
     
 
 cv2.destroyAllWindows()
