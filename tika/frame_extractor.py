@@ -12,8 +12,8 @@ while True:
         break
 
     cv2.imshow("Image", image)
-    k = cv2.waitKey(0)  # ???????
-    if k == ord('s'):  # ord function returns an integer representing the Unicode character
+    k = cv2.waitKey(0)  
+    if k == ord('s'):  
         cv2.imwrite(path + f"{c+1}.png",image)
         c+=1
 

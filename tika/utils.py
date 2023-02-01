@@ -15,11 +15,11 @@ def masking(img, lower_hsv, upper_hsv):
     bitw = cv2.bitwise_and(mask, mask, mask=mask)
 
     # applying opening operation
-    kernel = np.ones((3, 3), np.uint8)
+    kernel = np.ones((5, 5), np.uint8)
     opening = cv2.morphologyEx(bitw, cv2.MORPH_OPEN, kernel)
 
     # removing parasites
-    mask_f = ndimage.median_filter(opening, size=3)
+    mask_f = ndimage.median_filter(opening, size=2)
 
     return mask_f
 

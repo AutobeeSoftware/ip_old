@@ -25,13 +25,17 @@ prev_image_time = 0
 new_image_time = 0
 a = 0
 
-cap = cv2.VideoCapture('C:/Users/ertug/Desktop/video.mp4')
+cap = cv2.VideoCapture('/Users/emirysaglam/Documents/GitHub/IP_general/video.mp4')
 
 red_mask_cache=[]
 green_mask_cache=[]
 
+c=0
+
 while True:
     ret,image = cap.read()
+
+    frame = image.copy()
 
     if not ret:
         break
@@ -39,10 +43,22 @@ while True:
     height = image.shape[0]
 
     mask_red = masking(image, lower_red, upper_red)
-    wild_herbs = bounding_box(mask_red)
+    red_mask_cache.append(mask_red)
 
     mask_green = masking(image, lower_green, upper_green)
-    herbs = bounding_box(mask_green)
+    green_mask_cache.append(mask_green)
+
+    if len(red_mask_cache) > 3:
+        red_mask_cache.pop(0)
+        green_mask_cache.pop(0)
+    else:
+        continue
+
+    red_inter = intersect(red_mask_cache[0],red_mask_cache[1],red_mask_cache[2])
+    wild_herbs = bounding_box(red_inter)
+
+    green_inter = intersect(green_mask_cache[0],green_mask_cache[1],green_mask_cache[2])
+    herbs = bounding_box(green_inter)
 
 
     try:
@@ -51,9 +67,9 @@ while True:
             cv2.rectangle(image, i[0], i[1], (0,255,0), 2)
             cv2.putText(image, "herb", (i[1][0]+ 10, i[1][1] + 15), font, 0.7, (0,255,0), 2)
 
-        #for j in wild_herbs:
-        #    cv2.rectangle(image, j[0], j[1], (0,0,255), 2)
-        #    cv2.putText(image, "wild herb",(j[1][0]+ 10, j[1][1] + 15),font, 0.7, (0,0,255), 2)
+        for j in wild_herbs:
+            cv2.rectangle(image, j[0], j[1], (0,0,255), 2)
+            cv2.putText(image, "wild herb",(j[1][0]+ 10, j[1][1] + 15),font, 0.7, (0,0,255), 2)
 
     except:
         pass
@@ -66,9 +82,15 @@ while True:
     cv2.putText(image, "fps: " + fps, (width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     
     cv2.imshow("Image", image)
-    #cv2.imshow("red", mask_red)
+    cv2.imshow("red", mask_red)
     cv2.imshow("green", mask_green)
-    cv2.waitKey(1)
+
+
+    k = cv2.waitKey(0)  
+    if k == ord('s'):  
+        cv2.imwrite("/Users/emirysaglam/Documents/GitHub/IP_general/tika/cumulate/" + f"{c+1}.png",frame)
+        c+=1
+    
 
 cv2.destroyAllWindows()
 
