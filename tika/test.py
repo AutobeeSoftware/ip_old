@@ -44,5 +44,9 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 """
 
-arr = [1,2,3,4]
-print(arr[:4])
+from operator import add
+
+
+arr = [[2,3,4],[3,3,3]]
+
+print(arr.shape)

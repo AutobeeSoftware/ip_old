@@ -36,8 +36,8 @@ def bounding_box(mask):
             
             if obj_area > 50:
                 x, y, w, h = cv2.boundingRect(c)
-                params.append([(x, y), (w + x, h + y)])
-                print([obj_area,(x, y), (w + x, h + y)])
+                params.append([(x, y), (w, h)])
+                print([obj_area,(x, y), (w, h)])
 
             else:
                 print("no object found bigger than treshold")
@@ -55,3 +55,26 @@ def intersect(mask1,mask2,mask3):
     intersect0 = cv2.bitwise_and(mask1,mask2)
     interset_3 = cv2.bitwise_and(intersect0,mask3)
     return interset_3
+
+def is_middle(params,width):
+    x,y,w,h= params
+    cx = x+ int(w/2)
+
+    if cx<width/2-20:
+        print("on the left")
+    elif cx>width/2+20:
+        print("on the right")
+    else:
+        print("on the middle")
+
+
+def last_turn(lastTurnDir,mask):
+    height,width = mask.shape
+    
+    if lastTurnDir == "sol":
+        cv2.rectangle(mask, (0,0), (int(width/2),height), (0, 0, 0), -1)
+    
+    if lastTurnDir == "sag":
+        cv2.rectangle(mask, (int(width/2),0), (width,height), (0, 0, 0), -1)
+
+    return mask

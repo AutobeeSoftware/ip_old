@@ -4,6 +4,7 @@ from scipy import ndimage
 import time
 from utils import masking,bounding_box,intersect
 import matplotlib.pyplot as plt
+from operator import add
 
 # hue values must be discrete
 
@@ -71,11 +72,11 @@ while True:
     try:
         
         for i in herbs:
-            cv2.rectangle(image, i[0], i[1], (0,255,0), 2)
+            cv2.rectangle(image, i[0], list(map(add, i[0], i[1])), (0,255,0), 2)
             cv2.putText(image, "herb", (i[1][0]+ 10, i[1][1] + 15), font, 0.7, (0,255,0), 2)
 
         for j in wild_herbs:
-            cv2.rectangle(image, j[0], j[1], (0,0,255), 2)
+            cv2.rectangle(image, j[0],list(map(add, j[0], j[1])), (0,0,255), 2)
             cv2.putText(image, "wild herb",(j[1][0]+ 10, j[1][1] + 15),font, 0.7, (0,0,255), 2)
 
     except:
