@@ -29,7 +29,7 @@ def finding_mid_objects(image):
 
     for c in cnts1:
         area = cv2.contourArea(c)
-        if area > 100:
+        if area > 125:
             x,y,w,h = cv2.boundingRect(c)
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,255,0), 2)
             center = (int(x+(w/2)), int(y+(h/2)))
@@ -39,7 +39,7 @@ def finding_mid_objects(image):
     
     for c in cnts2:
         area = cv2.contourArea(c)
-        if area > 100:
+        if area > 125:
             x,y,w,h = cv2.boundingRect(c)
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,255,0), 2)
             center = (int(x+(w/2)), int(y+(h/2)))
@@ -65,7 +65,7 @@ def finding_mid_objects(image):
     if len(sol) == 0: # Aracin ne tarafa dogru dönecegi belirleniyor. Once sol, daha sonra orta ve en son sag taraf kontrol ediliyor.
         if len(orta) == 0:
             if len(sag) == 0:
-                print("Obje Yok")
+                pass
             else:
                 en_buyuk_deger = max(sag)
                 cv2.circle(image, area_merkez[en_buyuk_deger], 3, (0,0,255), -1)
@@ -79,23 +79,22 @@ def finding_mid_objects(image):
         cv2.circle(image ,area_merkez[en_buyuk_deger], 3, (0,0,255), -1)
         # print("Sola don")
         
-    cv2.imshow("result", image)
-    cv2.waitKey(0)
 
+# image = cv2.imread("result5.png")
+# finding_mid_objects(image)
+# cv2.imshow("result", image)
+# cv2.waitKey(0)
 
-image = cv2.imread("result5.png")
-finding_mid_objects(image)
 
 cap = cv2.VideoCapture("video.mp4")
 
+while True:
+    ret, frame = cap.read()
+    finding_mid_objects(frame)
 
-# while True:
-#     ret, frame = cap.read()
-#     finding_mid_screen(frame)
-
-#     cv2.imshow("result", frame)
-#     k = cv2.waitKey(15)
-#     if k == ord("q"):
-#         break
-
-# cv2.destroyAllWindows()   
+    cv2.imshow("result", frame)
+    k = cv2.waitKey(5)
+    if k == ord("q"):
+        break
+    
+cv2.destroyAllWindows()   
