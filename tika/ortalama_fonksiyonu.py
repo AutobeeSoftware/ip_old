@@ -3,11 +3,11 @@ import cv2
 import imutils
 import matplotlib.pyplot as plt
 
-# Objenin merkezini bul ve merkezin koordinat deðerlerini listeye kaydet.
-# Ekranýn orta noktasýný bul ve koordinat deðerlerini baþka bir listeye kaydet.
-# Eðer objenin x deðeri daha büyükse saða dön yazdýr. (Araç saða dönmeli.)
-# Eðer ekranýn x deðeri daha büyükse sola dön yazdýr. (Araç sola dönmeli.)
-# Eðer ekranýn ve objenin x deðerleri eþitse ortalanmýþtýr. Obje ortalandý yaz.
+# Kameranýn gordugu objeler tespit edilir.
+# Objeler bir dortgen icerisine alinir ve merkezleri belirlenir.
+# Dortgenlerin alaný ve merkezler bir dictionary'e kaydedilir.
+# Daha sonra bu cisimlerin merkezlerinin ekranin ne tarafinda olduðu belirlenir.
+# Once sol, daha sonra orta ve en son sag taraftaki cisimler kontrol edilir. Herhangi birinde birden fazla cisim varsa en buyuk cismin merkezine kirmizi bir daire koyulur.
 
 def finding_mid_objects(image):
     area_merkez = {}
@@ -34,7 +34,6 @@ def finding_mid_objects(image):
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,255,0), 2)
             center = (int(x+(w/2)), int(y+(h/2)))
             area_merkez.update({area:center})
-            # cv2.circle(image, center, 3, (0,255,255), -1)
         else:
             continue
     
@@ -45,12 +44,9 @@ def finding_mid_objects(image):
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,255,0), 2)
             center = (int(x+(w/2)), int(y+(h/2)))
             area_merkez.update({area:center})
-            # cv2.circle(image, center, 3, (0,255,255), -1)
         else:
             continue
     
-    # print(area_merkez)
-
     size = image.shape
     x_value = size[1]
 
@@ -58,36 +54,38 @@ def finding_mid_objects(image):
     sag = []
     orta = []
 
-    for i in area_merkez:
+    for i in area_merkez: # Bulunan cisimlerin area degerleri farklý listelere kaydediliyor.
         if (x_value/2) - 20 < area_merkez[i][0] < (x_value/2) + 20:
-            #print("Obje ortada, duz devam et.")
             orta.append(i)
         elif area_merkez[i][0] < (x_value/2) - 20:
-            # print("Obje soldadir,sola don.")
             sol.append(i)
         else:
-            # print("Obje sagdadir, saga don.")
             sag.append(i)
 
-    if len(sol) == 0:
-        if len(sag) == 0:
-            if len(orta) == 0:
+    if len(sol) == 0: # Aracin ne tarafa dogru dönecegi belirleniyor. Once sol, daha sonra orta ve en son sag taraf kontrol ediliyor.
+        if len(orta) == 0:
+            if len(sag) == 0:
                 print("Obje Yok")
             else:
-                print("Cisim ortadadir, duz devam et.")
+                en_buyuk_deger = max(sag)
+                cv2.circle(image, area_merkez[en_buyuk_deger], 3, (0,0,255), -1)
+                # print("Saga don")
         else:
-            print("Saga don")
+            en_buyuk_deger = max(orta)
+            cv2.circle(image, area_merkez[en_buyuk_deger], 3, (0,0,255), -1)
+            # print("Cisim ortadadir, duz devam et.")
     else:
-        print("Sola don")
-
+        en_buyuk_deger = max(sol)
+        cv2.circle(image ,area_merkez[en_buyuk_deger], 3, (0,0,255), -1)
+        # print("Sola don")
         
     cv2.imshow("result", image)
     cv2.waitKey(0)
 
 
-image = cv2.imread("result1.png")
+image = cv2.imread("result5.png")
 finding_mid_objects(image)
-# finding_mid_screen(image)
+
 cap = cv2.VideoCapture("video.mp4")
 
 
