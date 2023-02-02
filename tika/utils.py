@@ -52,11 +52,13 @@ def bounding_box(mask):
 
 
 def intersect(mask1,mask2,mask3):
+    #parazit azaltmak icin son uc makenin kesisimini alir
     intersect0 = cv2.bitwise_and(mask1,mask2)
     interset_3 = cv2.bitwise_and(intersect0,mask3)
     return interset_3
 
 def is_middle(params,width):
+    #cismin nerede oldugunu soyler
     x,y,w,h= params
     cx = x+ int(w/2)
 
@@ -69,6 +71,7 @@ def is_middle(params,width):
 
 
 def last_turn(lastTurnDir,mask):
+    # ros dan son donsu bilgisini alir ve ona gore roi belirler
     height,width = mask.shape
     
     if lastTurnDir == "sol":
