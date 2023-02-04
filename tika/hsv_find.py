@@ -1,9 +1,15 @@
 import cv2
 import numpy as np
-from scipy import ndimage
+#from scipy import ndimage
 import matplotlib.pyplot as plt
 
-img = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/herb1.png")
+img = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/tika/images/herb1.png")
+
+width = img.shape[1]
+heigth = img.shape[0]
+print(f"{width}x{heigth}")
+
+img = cv2.resize(img, (0, 0), fx = 0.4, fy = 0.4)
 """
 # histogram grafiği ile görüntüdeki hsv değerleri analiz edilebilir
 hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)

@@ -9,11 +9,22 @@ from operator import add
 # hue values must be discrete
 # bu degerler ortam ısıgına göre degisebilir test alaninada ayarlanmalı
 # hsv_find dosyasini kullanarak bulunabilir
+"""
+# atolye ici aksam test
 lower_green = np.array([48,80,50])
 upper_green = np.array([67,180,180])
 
 lower_red = np.array([0,88,80])
 upper_red = np.array([20,255,255])
+"""
+
+# atolye dısı gunduz test
+lower_green = np.array([35,55,50])
+upper_green = np.array([67,255,255])
+
+lower_red = np.array([0,100,136])
+upper_red = np.array([17,255,255])
+
 
 
 
