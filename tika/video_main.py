@@ -37,7 +37,7 @@ a = 0
 ################
 
 # fonskiyonun icine 0 atarak kamerayı aktiflestirebilirsin yoksa istedigin videonun yolunu yaz
-cap = cv2.VideoCapture('/Users/emirysaglam/Documents/GitHub/IP_general/video2.mp4')
+cap = cv2.VideoCapture('/Users/emirysaglam/Desktop/video2.mp4')
 
 #intersect fonksiyonu icin son 3 maskeyi tutuyo
 red_mask_cache=[]

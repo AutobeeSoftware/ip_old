@@ -47,6 +47,10 @@ cv2.destroyAllWindows()
 from operator import add
 
 
-arr = (1,3)
+"""arr = (1,3)
 arr2 = (3,4)
-print(list( map(add, arr, arr2) ))
+print(list( map(add, arr, arr2) ))"""
+
+arr = [1,2,3,4]
+for i,j in enumerate(arr):
+    print(i)

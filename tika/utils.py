@@ -73,15 +73,17 @@ def intersect(mask1,mask2,mask3):
     interset_3 = cv2.bitwise_and(intersect0,mask3)
     return interset_3
 
-def is_middle(params,width,tresh):
+def center(params,width,tresh):
     """
     bounding_box fonksiyonundan alınan parametrelerden yola çıkarak
     cismin konumunu ekrana göre nerde olduğunu verir bunu belirli bir
     treshhold değerine göre yapar
 
+    cismin merkezinin vulunduğu pikselin x eksenindeki yerini verir
+
     görüntünün genişliği de parametre olarak verilmeli
 
-    prinlerin bir manası yok ros için farklı outpular ayarlanabilir
+    printlerin bir manası yok ros için farklı outpular ayarlanabilir
     """
     x,y,w,h= params
     cx = x+ int(w/2)
@@ -93,6 +95,7 @@ def is_middle(params,width,tresh):
     else:
         print("on the middle")
 
+    return cx 
 
 def last_turn(lastTurnDir,mask):
 
@@ -122,3 +125,22 @@ def last_turn(lastTurnDir,mask):
         #sol ve sağ 1/4 lük alana maske atıldı
 
     return mask
+
+def closest(params):
+    """
+    kameraya en yakın bounding boxı verir
+    boduning_box fonksiyonun çıktısını ver
+    """
+    cache = 0
+    ind = None
+    for index,object in enumerate(params):
+        x,y,w,h = object
+        if cache < y:
+            cache = y
+            ind = index
+        else:
+            continue
+    if ind != None:
+        return params[ind]
+    else:
+        return None
