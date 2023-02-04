@@ -3,16 +3,20 @@ import numpy as np
 from scipy import ndimage
 import matplotlib.pyplot as plt
 
-img = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/tika/images/result2.png")
+img = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/herb1.png")
+"""
+# histogram grafiği ile görüntüdeki hsv değerleri analiz edilebilir
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-#hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+hue = list(np.concatenate(hsv[:,:,0]).flat)
+sat = list(np.concatenate(hsv[:,:,1]).flat)
+val = list(np.concatenate(hsv[:,:,2]).flat)
 
-#hue = list(np.concatenate(hsv[:,:,0]).flat)
-#sat = list(np.concatenate(hsv[:,:,1]).flat)
-#val = list(np.concatenate(hsv[:,:,2]).flat)
+plt.hist(val, bins=255)
+plt.show()
+"""
 
-#plt.hist(val, bins=255)
-#plt.show()
+# görüntüde hsv değerleri bulunup not edilir
 
 def empty(img):
     pass
@@ -25,6 +29,9 @@ cv2.createTrackbar("sat_min", "TrackBar", 0, 255, empty)
 cv2.createTrackbar("sat_max", "TrackBar", 255, 255, empty)
 cv2.createTrackbar("val_min", "TrackBar", 0, 255, empty)
 cv2.createTrackbar("val_max", "TrackBar", 255, 255, empty)
+
+lower_mask = None
+upper_mask = None
 
 while True:  # sürekli kamerayı okutur
 
@@ -43,15 +50,20 @@ while True:  # sürekli kamerayı okutur
     mask = cv2.inRange(hsv, lower, upper)
     cv2.imshow("Frame", img)  # img görüntüsünü gösteriyor
     cv2.imshow("Mask", mask)  # mask görüntüsünü gösteriyor
-    cv2.waitKey(1)
+    
+    k = cv2.waitKey(1)  
+    
+    if k == ord('q'):  
+        break
+    
+    if k == ord('s'):  
+        lower_mask = lower
+        upper_mask = upper
+        print(f"lower mask tresholds are{lower_mask}")
+        print(f"upper mask tresholds are{upper_mask}")
+        
 
 
 
 
 
-"""
-cv2.imshow("img", img)
-cv2.imshow("hsv", hsv)
-
-cv2.waitKey(0)
-"""

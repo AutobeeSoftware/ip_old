@@ -47,6 +47,6 @@ cv2.destroyAllWindows()
 from operator import add
 
 
-arr = [[2,3,4],[3,3,3]]
-
-print(arr.shape)
+arr = (1,3)
+arr2 = (3,4)
+print(list( map(add, arr, arr2) ))
