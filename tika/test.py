@@ -51,6 +51,15 @@ from operator import add
 arr2 = (3,4)
 print(list( map(add, arr, arr2) ))"""
 
-arr = [1,2,3,4]
-for i,j in enumerate(arr):
-    print(i)
+arr = [[(1,2),(2,3)],[(3,4),(4,5)],[(5,6),(6,7)]]
+names = ["herb" for i in range(len(arr))]
+
+t = dict(zip(names, arr))
+print(t)
+
+fruits = ["Apple", "Pear", "Peach", "Banana"]
+prices = [0.35, 0.40, 0.40, 0.28]
+
+fruit_dictionary = dict(zip(fruits, prices))
+
+print(fruit_dictionary)

@@ -88,7 +88,7 @@ def finding_mid_objects(image, mask1, mask2):
 # cv2.destroyAllWindows()
 
 
-cap = cv2.VideoCapture("video2.mp4")
+cap = cv2.VideoCapture('/Users/emirysaglam/Desktop/video2.mp4')
 lower_red = np.array([0,100,120])
 upper_red = np.array([10,255,255])
 lower_green = np.array([40,85,50])

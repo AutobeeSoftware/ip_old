@@ -20,7 +20,9 @@ def masking(img, lower_hsv, upper_hsv):
     # creating mask
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
-    cv2.rectangle(mask, (0,0), (width,int(height/4)), (0, 0, 0), -1)
+    
+    #kameranın konumuna göre yukarı atılcak maskenin boyutunu değiştirbilirsin 
+    cv2.rectangle(mask, (0,0), (width,int(height/2)), (0, 0, 0), -1)
 
     bitw = cv2.bitwise_and(mask, mask, mask=mask)
 
@@ -34,7 +36,7 @@ def masking(img, lower_hsv, upper_hsv):
     return mask_f
 
 
-def bounding_box(mask,tresh):
+def bounding_box(mask,tresh,tag):
     """
     input olarak maskeyi alır ve maskedeki alanların en büyük 4ünden 
     alanı tresholdun üstünde olanların sol üst köşesinin koordinatları ve 
@@ -50,7 +52,7 @@ def bounding_box(mask,tresh):
             
             if obj_area > tresh:
                 x, y, w, h = cv2.boundingRect(c)
-                params.append([(x, y), (w, h)])
+                params.append([(x, y), (w, h),tag])
 
             else:
                 print("no object found bigger than treshold")
@@ -73,7 +75,7 @@ def intersect(mask1,mask2,mask3):
     interset_3 = cv2.bitwise_and(intersect0,mask3)
     return interset_3
 
-def center(params,width,tresh):
+def is_center(params,width,tresh):
     """
     bounding_box fonksiyonundan alınan parametrelerden yola çıkarak
     cismin konumunu ekrana göre nerde olduğunu verir bunu belirli bir
@@ -85,17 +87,21 @@ def center(params,width,tresh):
 
     printlerin bir manası yok ros için farklı outpular ayarlanabilir
     """
-    x,y,w,h= params
-    cx = x+ int(w/2)
+    if params != None:
+        (x,y),(w,h),tag = params
+        cx = x+ int(w/2)
 
-    if cx<width/2-tresh:
-        print("on the left")
-    elif cx>width/2+tresh:
-        print("on the right")
+        if cx<width/2-tresh:
+            print("on the left")
+        elif cx>width/2+tresh:
+            print("on the right")
+        else:
+            print("on the middle")
+
+        return cx 
+
     else:
-        print("on the middle")
-
-    return cx 
+        return None
 
 def last_turn(lastTurnDir,mask):
 
@@ -134,7 +140,7 @@ def closest(params):
     cache = 0
     ind = None
     for index,object in enumerate(params):
-        x,y,w,h = object
+        (x,y),(w,h),tag = object
         if cache < y:
             cache = y
             ind = index
