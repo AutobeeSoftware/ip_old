@@ -74,18 +74,30 @@ while True:
     green_inter = intersect(green_mask_cache[0],green_mask_cache[1],green_mask_cache[2])
     herbs = bounding_box(green_inter,50,"herb")
 
-    
+    obj_loc = None
+
     if herbs == None and wild_herbs != None:
         combined = wild_herbs
+        nearest = closest(combined)
+        obj_loc = is_center(nearest,width,int(width/4))
+        # int(width/4) orta sayılcak genişliği belirler
+        
     elif wild_herbs == None and herbs != None:
         combined = herbs
+        nearest = closest(combined)
+        obj_loc = is_center(nearest,width,int(width/4))
+        # int(width/4) orta sayılcak genişliği belirler
+
     elif wild_herbs != None and herbs != None:
         combined = herbs + wild_herbs
         nearest = closest(combined)
-        is_center(nearest,width,int(width/4))
+        obj_loc = is_center(nearest,width,int(width/4)) 
+        # int(width/4) orta sayılcak genişliği belirler
     else:
         print("no object found")
 
+    if obj_loc != None:
+        cx, cx_string = obj_loc
     # imshow yapilmiyosa gereksiz
     try:
         #bounding boxlari goruntude ciktisi aliniyor
@@ -99,6 +111,7 @@ while True:
         if nearest != None:
             cv2.rectangle(image, nearest[0], list(map(add, nearest[0], nearest[1])), (255,0,0), 2)
             cv2.putText(image, nearest[2], (nearest[0][0], nearest[0][1] -15), font, 0.7, (255,0,0), 2)
+            cv2.putText(image, cx_string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
 
         ### fps icin ##
         new_image_time = time.time()
@@ -109,6 +122,8 @@ while True:
         cv2.putText(image, "fps: " + fps, (width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
         ##########
 
+        cv2.line(image,(int(width/4),0),(int(width/4),height),(255,0,0),2)
+        cv2.line(image,(int(width*3/4),0),(int(width*3/4),height),(255,0,0),2)
         cv2.imshow("Image", image)
         cv2.imshow("red", mask_red)
         cv2.imshow("green", mask_green)

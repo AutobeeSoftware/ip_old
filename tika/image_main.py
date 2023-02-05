@@ -32,7 +32,7 @@ herbs= bounding_box(mask_green,50,"herb")
 combined = herbs + wild_herbs
 nearest = closest(combined)
 
-is_center(nearest,width,int(width/4))
+cx, string = is_center(nearest,width,int(width/4))
 
 
 #closest fonksiyonuya beraber objeleri birleştir
@@ -51,11 +51,16 @@ try:
     
     cv2.rectangle(image, nearest[0], list(map(add, nearest[0], nearest[1])), (255,0,0), 2)
     cv2.putText(image, nearest[2], (nearest[0][0], nearest[0][1] -15), font, 0.7, (255,0,0), 2)
+    cv2.putText(image, string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
     
+
     
 
 except:
     pass
+
+cv2.line(image,(int(width/4),0),(int(width/4),heigth),(255,0,0),5)
+cv2.line(image,(int(width*3/4),0),(int(width*3/4),heigth),(255,0,0),5)
 
 cv2.imshow("Image", image)
 cv2.imshow("red", mask_red)

@@ -90,15 +90,19 @@ def is_center(params,width,tresh):
     if params != None:
         (x,y),(w,h),tag = params
         cx = x+ int(w/2)
-
-        if cx<width/2-tresh:
+        if cx<int(width/2-tresh):
             print("on the left")
-        elif cx>width/2+tresh:
+            cx_string = "left"
+        elif cx>int(width/2+tresh):
             print("on the right")
+            cx_string = "right"
         else:
             print("on the middle")
+            cx_string = "middle"
+        
+        print([cx,cx_string])
 
-        return cx 
+        return [cx,cx_string]
 
     else:
         return None
