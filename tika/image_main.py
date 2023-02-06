@@ -6,6 +6,15 @@ from utils import masking,bounding_box,closest,last_turn,is_center
 
 
 # hue values must be discrete
+"""
+#test
+lower_green = np.array([0,0,0])
+upper_green = np.array([255,255,255])
+
+lower_red = np.array([0,0,0])
+upper_red = np.array([255,255,255])
+
+"""
 
 
 # atolye ici aksam test
@@ -29,18 +38,21 @@ upper_red = np.array([17,255,255])
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
-image = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/tika/images/turn.png")
+image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/turn.png")
 width = image.shape[1]
 heigth = image.shape[0]
 
 
 
 mask_red = masking(image, lower_red, upper_red)
+mask_red = last_turn("sag",mask_red)
 wild_herbs = bounding_box(mask_red,50,"wild herb")
 
-
 mask_green = masking(image, lower_green, upper_green)
+mask_green = last_turn("sag",mask_green)
 herbs= bounding_box(mask_green,50,"herb")
+
+
 
 obj_loc = None
 

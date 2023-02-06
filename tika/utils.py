@@ -22,7 +22,7 @@ def masking(img, lower_hsv, upper_hsv):
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
     
     #kameranın konumuna göre yukarı atılcak maskenin boyutunu değiştirbilirsin 
-    cv2.rectangle(mask, (0,0), (width,int(height/2)), (0, 0, 0), -1)
+    cv2.rectangle(mask, (0,0), (width,int(height/4)), (0, 0, 0), -1)
 
     bitw = cv2.bitwise_and(mask, mask, mask=mask)
 
@@ -130,7 +130,7 @@ def last_turn(lastTurnDir,mask):
         cv2.rectangle(mask, (int(width/2),0), (width,height), (0, 0, 0), -1)
         #sağ yarıya maske atıldı
 
-    elif lastTurnDir == None:
+    else:
         cv2.rectangle(mask, (0,0), (int(width/4),height), (0, 0, 0), -1)
         cv2.rectangle(mask, (int(width*3/4),0), (width,height), (0, 0, 0), -1)
         #sol ve sağ 1/4 lük alana maske atıldı
