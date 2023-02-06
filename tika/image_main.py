@@ -7,16 +7,28 @@ from utils import masking,bounding_box,closest,last_turn,is_center
 
 # hue values must be discrete
 
+
+# atolye ici aksam test
+lower_green = np.array([48,80,50])
+upper_green = np.array([67,180,180])
+
+lower_red = np.array([0,88,80])
+upper_red = np.array([20,255,255])
+
+
+"""
+# atolye dısı gunduz test
 lower_green = np.array([35,55,50])
 upper_green = np.array([67,255,255])
 
 lower_red = np.array([0,100,136])
 upper_red = np.array([17,255,255])
+"""
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
-image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/herb1.png")
+image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/turn.png")
 width = image.shape[1]
 heigth = image.shape[0]
 
@@ -29,14 +41,30 @@ wild_herbs = bounding_box(mask_red,50,"wild herb")
 mask_green = masking(image, lower_green, upper_green)
 herbs= bounding_box(mask_green,50,"herb")
 
-combined = herbs + wild_herbs
-nearest = closest(combined)
+obj_loc = None
 
-cx, string = is_center(nearest,width,int(width/4))
+if herbs == None and wild_herbs != None:
+    combined = wild_herbs
+    nearest = closest(combined)
+    obj_loc = is_center(nearest,width,int(width/4))
+    # int(width/4) orta sayılcak genişliği belirler
 
+elif wild_herbs == None and herbs != None:
+    combined = herbs
+    nearest = closest(combined)
+    obj_loc = is_center(nearest,width,int(width/4))
+    # int(width/4) orta sayılcak genişliği belirler
 
-#closest fonksiyonuya beraber objeleri birleştir
+elif wild_herbs != None and herbs != None:
+    combined = herbs + wild_herbs
+    nearest = closest(combined)
+    obj_loc = is_center(nearest,width,int(width/4)) 
+    # int(width/4) orta sayılcak genişliği belirler
+else:
+    print("no object found")
 
+if obj_loc != None:
+    cx, cx_string = obj_loc
 
 
 try:
@@ -51,7 +79,7 @@ try:
     
     cv2.rectangle(image, nearest[0], list(map(add, nearest[0], nearest[1])), (255,0,0), 2)
     cv2.putText(image, nearest[2], (nearest[0][0], nearest[0][1] -15), font, 0.7, (255,0,0), 2)
-    cv2.putText(image, string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
+    cv2.putText(image, cx_string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
     
 
     

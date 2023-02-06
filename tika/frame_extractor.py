@@ -1,8 +1,8 @@
 import cv2
 
 
-cap = cv2.VideoCapture('C:/Users/ertug/Desktop/video.mp4')
-path = "C:/Users/ertug/Desktop/"
+cap = cv2.VideoCapture('/Users/emirysaglam/Documents/GitHub/IP_general/video.mp4')
+path = "/Users/emirysaglam/Documents/GitHub/IP_general/"
 c=0
 
 while True:
@@ -16,6 +16,10 @@ while True:
     if k == ord('s'):  
         cv2.imwrite(path + f"{c+1}.png",image)
         c+=1
+
+    if k == ord('p'):  
+            break
+        
 
 cv2.destroyAllWindows()
 

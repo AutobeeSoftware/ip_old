@@ -9,15 +9,15 @@ from operator import add
 # hue values must be discrete
 # bu degerler ortam ısıgına göre degisebilir test alaninada ayarlanmalı
 # hsv_find dosyasini kullanarak bulunabilir
-"""
+
 # atolye ici aksam test
 lower_green = np.array([48,80,50])
 upper_green = np.array([67,180,180])
 
 lower_red = np.array([0,88,80])
 upper_red = np.array([20,255,255])
-"""
 
+"""
 # atolye dısı gunduz test
 lower_green = np.array([35,55,50])
 upper_green = np.array([67,255,255])
@@ -26,7 +26,7 @@ lower_red = np.array([0,100,136])
 upper_red = np.array([17,255,255])
 
 
-
+"""
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -37,7 +37,7 @@ a = 0
 ################
 
 # fonskiyonun icine 0 atarak kamerayı aktiflestirebilirsin yoksa istedigin videonun yolunu yaz
-cap = cv2.VideoCapture('/Users/emirysaglam/Desktop/video2.mp4')
+cap = cv2.VideoCapture('/Users/emirysaglam/Documents/GitHub/IP_general/video.mp4')
 
 #intersect fonksiyonu icin son 3 maskeyi tutuyo
 red_mask_cache=[]
@@ -81,7 +81,7 @@ while True:
         nearest = closest(combined)
         obj_loc = is_center(nearest,width,int(width/4))
         # int(width/4) orta sayılcak genişliği belirler
-        
+
     elif wild_herbs == None and herbs != None:
         combined = herbs
         nearest = closest(combined)
@@ -108,37 +108,36 @@ while True:
         for j in wild_herbs:
             cv2.rectangle(image, j[0],list(map(add, j[0], j[1])), (0,0,255), 2)
             cv2.putText(image, "wild herb",(j[0][0], j[0][1] - 15),font, 0.7, (0,0,255), 2)
+        
         if nearest != None:
             cv2.rectangle(image, nearest[0], list(map(add, nearest[0], nearest[1])), (255,0,0), 2)
             cv2.putText(image, nearest[2], (nearest[0][0], nearest[0][1] -15), font, 0.7, (255,0,0), 2)
             cv2.putText(image, cx_string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
-
-        ### fps icin ##
-        new_image_time = time.time()
-        fps = 1 / (new_image_time - prev_image_time)
-        prev_image_time = new_image_time
-        fps = int(fps)
-        fps = str(fps)
-        cv2.putText(image, "fps: " + fps, (width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
-        ##########
-
-        cv2.line(image,(int(width/4),0),(int(width/4),height),(255,0,0),2)
-        cv2.line(image,(int(width*3/4),0),(int(width*3/4),height),(255,0,0),2)
-        cv2.imshow("Image", image)
-        cv2.imshow("red", mask_red)
-        cv2.imshow("green", mask_green)
-
-
-        k = cv2.waitKey(1)  
-        if k == ord('q'):  
-            break
         
 
     except:
         pass
 
 
-    
+    ### fps icin ##
+    new_image_time = time.time()
+    fps = 1 / (new_image_time - prev_image_time)
+    prev_image_time = new_image_time
+    fps = int(fps)
+    fps = str(fps)
+    cv2.putText(image, "fps: " + fps, (width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    ##########
+
+    cv2.line(image,(int(width/4),0),(int(width/4),height),(255,0,0),2)
+    cv2.line(image,(int(width*3/4),0),(int(width*3/4),height),(255,0,0),2)
+    cv2.imshow("Image", image)
+    cv2.imshow("red", mask_red)
+    cv2.imshow("green", mask_green)
+
+
+    k = cv2.waitKey(1)  
+    if k == ord('q'):  
+        break
 
 cv2.destroyAllWindows()
 

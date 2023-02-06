@@ -55,4 +55,3 @@ arr = [5,"beş"]
 arr2 = None
 
 
-print(b)

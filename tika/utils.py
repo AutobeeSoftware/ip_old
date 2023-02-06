@@ -107,6 +107,7 @@ def is_center(params,width,tresh):
     else:
         return None
 
+# bu fonksiyon test edilmedi 
 def last_turn(lastTurnDir,mask):
 
     """
@@ -154,3 +155,6 @@ def closest(params):
         return params[ind]
     else:
         return None
+
+
+#cumulate fonksiyonu ekle
