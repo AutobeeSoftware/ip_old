@@ -9,11 +9,12 @@ from utils import masking,bounding_box,closest,last_turn,is_center
 
 
 # atolye ici aksam test
-lower_green = np.array([48,80,50])
+lower_green = np.array([48,22,80])
 upper_green = np.array([67,180,180])
 
-lower_red = np.array([0,88,80])
+lower_red = np.array([0,56,116])
 upper_red = np.array([20,255,255])
+
 
 
 """
@@ -28,7 +29,7 @@ upper_red = np.array([17,255,255])
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
-image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/turn.png")
+image = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/tika/images/turn.png")
 width = image.shape[1]
 heigth = image.shape[0]
 

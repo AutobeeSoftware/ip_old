@@ -11,10 +11,10 @@ from operator import add
 # hsv_find dosyasini kullanarak bulunabilir
 
 # atolye ici aksam test
-lower_green = np.array([48,80,50])
+lower_green = np.array([48,22,80])
 upper_green = np.array([67,180,180])
 
-lower_red = np.array([0,88,80])
+lower_red = np.array([0,56,116])
 upper_red = np.array([20,255,255])
 
 """
