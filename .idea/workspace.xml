@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8db10304-841c-43a5-8b62-a8a95b812b64" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tika/hsv_find.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/hsv_find.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tika/image_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/image_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tika/video_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/video_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tika/frame_extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/tika/frame_extractor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,21 +33,21 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="settings.editor.selected.configurable" value="diff.base" />
+    <property name="settings.editor.selected.configurable" value="preferences.pathVariables" />
   </component>
-  <component name="RunManager" selected="Python.image_main">
+  <component name="RunManager" selected="Python.frame_extractor">
     <configuration name="frame_extractor" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IP_general" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\ertug\PycharmProjects\pythonProject\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tika" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tika/frame_extractor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -145,10 +143,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.frame_extractor" />
         <item itemvalue="Python.image_main" />
         <item itemvalue="Python.hsv_find" />
         <item itemvalue="Python.test" />
-        <item itemvalue="Python.frame_extractor" />
         <item itemvalue="Python.video" />
       </list>
     </recent_temporary>
