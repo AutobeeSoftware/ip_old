@@ -16,7 +16,6 @@ upper_red = np.array([255,255,255])
 
 """
 
-
 # atolye ici aksam test
 lower_green = np.array([48,22,80])
 upper_green = np.array([67,180,180])
@@ -38,7 +37,7 @@ upper_red = np.array([17,255,255])
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
-image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/images/turn.png")
+image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/cumulate/7.png")
 width = image.shape[1]
 heigth = image.shape[0]
 
