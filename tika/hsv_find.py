@@ -3,7 +3,7 @@ import numpy as np
 #from scipy import ndimage
 import matplotlib.pyplot as plt
 
-img = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/tika/images/turn.png")
+img = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/1.png")
 
 width = img.shape[1]
 heigth = img.shape[0]
