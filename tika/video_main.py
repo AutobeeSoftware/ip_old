@@ -40,6 +40,8 @@ a = 0
 
 # fonskiyonun icine 0 atarak kamerayı aktiflestirebilirsin yoksa istedigin videonun yolunu yaz
 cap = cv2.VideoCapture(gstreamer_pipeline())
+if not cap.isOpened():
+    print("camera failed")
 
 #intersect fonksiyonu icin son 3 maskeyi tutuyo
 red_mask_cache=[]

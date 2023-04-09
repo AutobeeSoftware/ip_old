@@ -19,6 +19,9 @@ plt.show()
 """
 
 cap = cv2.VideoCapture(gstreamer_pipeline())
+if not cap.isOpened():
+    print("camera failed")
+
 
 # görüntüde hsv değerleri bulunup not edilir
 
@@ -26,14 +29,7 @@ def empty(img):
     pass
 
 
-cv2.namedWindow("TrackBar")  # istenilen rengin filtrelenmei için trackbar oluşturma
-cv2.resizeWindow("TrackBar", 600, 300, )
-cv2.createTrackbar("hue_min", "TrackBar", 0, 255, empty)
-cv2.createTrackbar("hue_max", "TrackBar", 255, 255, empty)
-cv2.createTrackbar("sat_min", "TrackBar", 0, 255, empty)
-cv2.createTrackbar("sat_max", "TrackBar", 255, 255, empty)
-cv2.createTrackbar("val_min", "TrackBar", 0, 255, empty)
-cv2.createTrackbar("val_max", "TrackBar", 255, 255, empty)
+
 
 type = input("type (red/green)")
 
@@ -50,9 +46,17 @@ elif type == "red":
 else:
     print("unkown input")
 
+cv2.namedWindow("TrackBar")  # istenilen rengin filtrelenmei için trackbar oluşturma
+cv2.resizeWindow("TrackBar", 600, 300, )
+cv2.createTrackbar("hue_min", "TrackBar", lower_mask[0], 255, empty)
+cv2.createTrackbar("hue_max", "TrackBar", upper_mask[0], 255, empty)
+cv2.createTrackbar("sat_min", "TrackBar", lower_mask[1], 255, empty)
+cv2.createTrackbar("sat_max", "TrackBar", upper_mask[1], 255, empty)
+cv2.createTrackbar("val_min", "TrackBar", lower_mask[2], 255, empty)
+cv2.createTrackbar("val_max", "TrackBar", upper_mask[2], 255, empty)
 # click s to save click q to quit
 
-
+c=0
 while True:  # sürekli kamerayı okutur
     
     ret,image = cap.read()
@@ -63,7 +67,11 @@ while True:  # sürekli kamerayı okutur
 
     width = image.shape[1]
     heigth = image.shape[0]
-    print(f"{width}x{heigth}")
+    
+    if c==0:
+        print(f"{width}x{heigth}")
+        c+=1
+
 
 
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -81,8 +89,8 @@ while True:  # sürekli kamerayı okutur
     mask = cv2.inRange(hsv, lower, upper)
     mask = cv2.merge((mask,mask,mask))
     
-    cv2.putText(image, "rgb", (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
-    cv2.putText(image, color , (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(image, "rgb", (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(image, color , (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     
     im_v = cv2.vconcat([image, mask])
 
