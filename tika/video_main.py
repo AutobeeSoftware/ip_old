@@ -43,6 +43,11 @@ cap = cv2.VideoCapture(gstreamer_pipeline())
 if not cap.isOpened():
     print("camera failed")
 
+_,img = cap.read()
+width = img.shape[1]
+heigth = img.shape[0]
+print(f"{width}x{heigth}")
+
 #intersect fonksiyonu icin son 3 maskeyi tutuyo
 red_mask_cache=[]
 green_mask_cache=[]
@@ -51,6 +56,8 @@ while True:
     ret,image = cap.read()
     if not ret:
         break
+    
+    image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
 
     width = image.shape[1]
     height = image.shape[0]
@@ -140,11 +147,11 @@ while True:
     mask_red = cv2.merge((mask_red,mask_red,mask_red))
     mask_green = cv2.merge((mask_green,mask_green,mask_green))
 
-    cv2.putText(image, "rgb", (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
-    cv2.putText(mask_red, "mask_red" , (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
-    cv2.putText(mask_green, "mask_green" , (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(image, "rgb", (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(mask_red, "mask_red" , (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(mask_green, "mask_green" , (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     
-    im_v = cv2.vconcat([mask_red,image, mask_green])
+    im_v = cv2.hconcat([mask_red,image, mask_green])
     cv2.imshow("Frame", im_v)  # img görüntüsünü gösteriyor
 
     k = cv2.waitKey(1)  

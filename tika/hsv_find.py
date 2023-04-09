@@ -22,6 +22,13 @@ cap = cv2.VideoCapture(gstreamer_pipeline())
 if not cap.isOpened():
     print("camera failed")
 
+_,img = cap.read()
+width = img.shape[1]
+heigth = img.shape[0]
+print(f"{width}x{heigth}")
+
+
+
 
 # görüntüde hsv değerleri bulunup not edilir
 
@@ -47,7 +54,7 @@ else:
     print("unkown input")
 
 cv2.namedWindow("TrackBar")  # istenilen rengin filtrelenmei için trackbar oluşturma
-cv2.resizeWindow("TrackBar", 600, 300, )
+cv2.resizeWindow("TrackBar", heigth, width, )
 cv2.createTrackbar("hue_min", "TrackBar", lower_mask[0], 255, empty)
 cv2.createTrackbar("hue_max", "TrackBar", upper_mask[0], 255, empty)
 cv2.createTrackbar("sat_min", "TrackBar", lower_mask[1], 255, empty)
@@ -90,13 +97,12 @@ while True:  # sürekli kamerayı okutur
     mask = cv2.merge((mask,mask,mask))
     
     cv2.putText(image, "rgb", (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
-    cv2.putText(image, color , (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(mask, color , (int(width/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     
     im_v = cv2.vconcat([image, mask])
 
     cv2.imshow("Frame", im_v)  # img görüntüsünü gösteriyor
-    cv2.imshow(color, mask)  # mask görüntüsünü gösteriyor
-    
+        
     k = cv2.waitKey(1)  
     
     if k == ord('q'):  
