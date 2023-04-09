@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from scipy import ndimage
 import time
-from utils import masking,bounding_box,closest,last_turn,is_center,intersect
+from utils import masking,bounding_box,closest,last_turn,is_center,intersect,gstreamer_pipeline
 import matplotlib.pyplot as plt
 from operator import add
 
@@ -39,7 +39,7 @@ a = 0
 ################
 
 # fonskiyonun icine 0 atarak kamerayı aktiflestirebilirsin yoksa istedigin videonun yolunu yaz
-cap = cv2.VideoCapture('/Users/emirysaglam/Desktop/tika-video/video3.mp4')
+cap = cv2.VideoCapture(gstreamer_pipeline())
 
 #intersect fonksiyonu icin son 3 maskeyi tutuyo
 red_mask_cache=[]
