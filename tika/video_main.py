@@ -53,6 +53,8 @@ while True:
     width = image.shape[1]
     height = image.shape[0]
 
+    print(width,height)
+
     #anlık maskeleme yapılıyor
     mask_red = masking(image, lower_red, upper_red)
     red_mask_cache.append(mask_red)
@@ -132,10 +134,16 @@ while True:
 
     cv2.line(image,(int(width/4),0),(int(width/4),height),(255,0,0),2)
     cv2.line(image,(int(width*3/4),0),(int(width*3/4),height),(255,0,0),2)
-    cv2.imshow("Image", image)
-    cv2.imshow("red", mask_red)
-    cv2.imshow("green", mask_green)
+    
+    mask_red = cv2.merge((mask_red,mask_red,mask_red))
+    mask_green = cv2.merge((mask_green,mask_green,mask_green))
 
+    cv2.putText(image, "rgb", (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(mask_red, "mask_red" , (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(mask_green, "mask_green" , (width/2, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    
+    im_v = cv2.vconcat([mask_red,image, mask_green])
+    cv2.imshow("Frame", im_v)  # img görüntüsünü gösteriyor
 
     k = cv2.waitKey(1)  
     if k == ord('q'):  
