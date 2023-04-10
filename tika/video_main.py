@@ -9,7 +9,9 @@ from operator import add
 # hue values must be discrete
 # bu degerler ortam ısıgına göre degisebilir test alaninada ayarlanmalı
 # hsv_find dosyasini kullanarak bulunabilir
-"""
+
+
+
 # atolye ici aksam test
 lower_green = np.array([48,22,80])
 upper_green = np.array([67,180,180])
@@ -17,15 +19,6 @@ upper_green = np.array([67,180,180])
 lower_red = np.array([0,56,116])
 upper_red = np.array([20,255,255])
 
-"""
-
-
-# atolye dısı gunduz test
-lower_green = np.array([35,55,50])
-upper_green = np.array([67,255,255])
-
-lower_red = np.array([0,100,136])
-upper_red = np.array([17,255,255])
 
 
 
@@ -42,11 +35,6 @@ a = 0
 cap = cv2.VideoCapture(gstreamer_pipeline())
 if not cap.isOpened():
     print("camera failed")
-
-_,img = cap.read()
-width = img.shape[1]
-heigth = img.shape[0]
-print(f"{width}x{heigth}")
 
 #intersect fonksiyonu icin son 3 maskeyi tutuyo
 red_mask_cache=[]

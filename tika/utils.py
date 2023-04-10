@@ -166,6 +166,7 @@ def gstreamer_pipeline(
 ):
 
     """
+    opencv ile çağırınca 960x540dan mı alıyo 1920x180den mi?
     >>cv2.VideoCapture(gstreamer_pipeline()) 
     """
     return (

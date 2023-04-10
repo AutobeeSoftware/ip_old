@@ -18,11 +18,13 @@ plt.hist(val, bins=255)
 plt.show()
 """
 
-cap = cv2.VideoCapture(gstreamer_pipeline())
+cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("camera failed")
 
+
 _,img = cap.read()
+img = cv2.resize(img, (0, 0), fx = 0.5, fy = 0.5)
 width = img.shape[1]
 heigth = img.shape[0]
 print(f"{width}x{heigth}")
@@ -34,9 +36,6 @@ print(f"{width}x{heigth}")
 
 def empty(img):
     pass
-
-
-
 
 type = input("type (red/green)")
 
@@ -52,6 +51,9 @@ elif type == "red":
 
 else:
     print("unkown input")
+    color = "unkown"
+    lower_mask = np.array([0,0,0])
+    upper_mask = np.array([0,0,0])
 
 cv2.namedWindow("TrackBar")  # istenilen rengin filtrelenmei için trackbar oluşturma
 cv2.resizeWindow("TrackBar", heigth, width, )
@@ -63,7 +65,7 @@ cv2.createTrackbar("val_min", "TrackBar", lower_mask[2], 255, empty)
 cv2.createTrackbar("val_max", "TrackBar", upper_mask[2], 255, empty)
 # click s to save click q to quit
 
-c=0
+
 while True:  # sürekli kamerayı okutur
     
     ret,image = cap.read()
@@ -74,12 +76,6 @@ while True:  # sürekli kamerayı okutur
 
     width = image.shape[1]
     heigth = image.shape[0]
-    
-    if c==0:
-        print(f"{width}x{heigth}")
-        c+=1
-
-
 
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
@@ -101,8 +97,8 @@ while True:  # sürekli kamerayı okutur
     
     im_v = cv2.vconcat([image, mask])
 
-    cv2.imshow("Frame", im_v)  # img görüntüsünü gösteriyor
-        
+    cv2.imshow("TrackBar", im_v)  # img görüntüsünü gösteriyor
+    cv2.getTrackbarPos("TrackBar", "Frame")
     k = cv2.waitKey(1)  
     
     if k == ord('q'):  
@@ -112,9 +108,9 @@ while True:  # sürekli kamerayı okutur
         lower_mask = lower
         upper_mask = upper
         
-        print(f"                       hue,saturation,value")
-        print(f"{color} lower tresholds are{lower_mask}")
-        print(f"{color} upper tresholds are{upper_mask}")
+        print(f"                            hue,sat,val")
+        print(f"{color} lower tresholds are {lower_mask}")
+        print(f"{color} upper tresholds are {upper_mask}")
         
 
 
