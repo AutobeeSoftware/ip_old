@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from scipy import ndimage
-from tika import Tika
+from tika import Bbox, Mask
 import time
 import matplotlib.pyplot as plt
 from operator import add
@@ -49,32 +49,34 @@ while True:
     if not ret:
         break
 
-    red = Tika(name = "red",image=frame,lower_hsv=lower_red, upper_hsv=upper_red)
-    green = Tika(name = "green",image=frame,lower_hsv=lower_green, upper_hsv=upper_green)
+    red = Mask(name = "red",image=frame,lower_hsv=lower_red, upper_hsv=upper_red)
+    green = Mask(name = "green",image=frame,lower_hsv=lower_green, upper_hsv=upper_green)
 
 
     #intersect filtreleri atiliyor (son 3 framede de ortak olan pikseller aliniyor)
     #bonding box larin parametreleri belirleniyor
+    print(red.getWidth)
+    cv2.imshow("red", red.masking())
 
-    wild_herbs = red.setBbox(red.masking(),100,4,red.name)
-    herbs = green.setBbox(green.masking(),100,4,green.name)
+    wild_herbs = Bbox.setBbox("red",red.masking(),red.getWidth,30)
+    herbs = Bbox.setBbox("green",green.masking(),green.getWidth,30)
 
     obj_loc = None
 
     if herbs == None and wild_herbs != None:
         combined = wild_herbs
-        target = Tika.closest(combined)
+        target = Bbox.closest(combined)
         # int(width/4) orta sayılcak genişliği belirler
 
     elif wild_herbs == None and herbs != None:
         combined = herbs
-        target = Tika.closest(combined)
+        target = Bbox.closest(combined)
 
         # int(width/4) orta sayılcak genişliği belirler
 
     elif wild_herbs != None and herbs != None:
         combined = herbs + wild_herbs
-        target = Tika.closest(combined)
+        target = Bbox.closest(combined)
         # int(width/4) orta sayılcak genişliği belirler
     else:
         print("no object found")

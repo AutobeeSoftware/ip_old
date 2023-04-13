@@ -74,100 +74,8 @@ class Bbox():
             print("no object sent to the function")
             self.cx = None
             self.loc = None
-    
-    
 
-
-
-class Mask:
-
-    def __init__(self, name, image, lower_hsv, upper_hsv):
-        print("***test***")
-        self.name = name
-        self.lower_hsv = lower_hsv
-        self.upper_hsv = upper_hsv
-        self.image = image
-        self.width = image.shape[1]
-        self.heigth = image.shape[0]
-
-    def getWidth(self):
-        return self.width
-
-    def getImage(self):
-        return self.image
-
-    def getLowerHsv(self):
-        return self.lower_hsv
-    
-    def getUpperHsv(self):
-        return self.upper_hsv
-
-    def getName(self):
-        return self.name
-
-    def setName(self,name):
-        self.name = name
-
-    def setWidth(self,width):
-        self.width = width
-
-    def setHeigth(self,heigth):
-        self.width = heigth
-
-    def setImage(self,image0):
-        self.image = image0
-        Mask.setWidth(image0.shape[1])
-        Mask.setHeigth(image0.shape[0])
-
-    def setLowerHsv(self,lowerhsv):
-        self.lower_hsv = lowerhsv
-
-    def setUpperHsv(self, upperhsv):
-        self.upper_hsv = upperhsv
-
-    def masking(self,horizon=4, opening=2,medianFltr=2):
-        """
-        sınır hsv değerleri ile maske çıkarıp 
-        bu maskey opening ve median filter ile sadeleştirme fonskiyonu
-        input olarak -> görüntü , alt sınır , üst sınır
-
-        *kernel değişkeni ve median filterdaki size değişkeni
-        duruma göre değiştirilebilir boyut ne kadar artarsa o kadar yoğun 
-        bir filtreleme yapılır
-        """
-
-        # creating mask
-        hsv = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv, self.lowerHsv, self.upperhsv)
-        
-        #kameranın konumuna göre yukarı atılcak maskenin boyutunu değiştirbilirsin 
-        cv2.rectangle(mask, (0,0), (self.width,int(self.height/horizon)), (0, 0, 0), -1)
-
-        bitw = cv2.bitwise_and(mask, mask, mask=mask)
-
-        # applying opening operation
-        kernel = np.ones((opening, 2), np.uint8)
-        opening = cv2.morphologyEx(bitw, cv2.MORPH_OPEN, kernel)
-
-        # removing parasites
-        mask_f = ndimage.median_filter(opening, size=medianFltr)
-
-        return mask_f
-
-    
-
-
-
-class Tika(Mask,Bbox):
-    print("*****test******")
-
-    def __innit__(self,name, image, lower_hsv, upper_hsv,tag,x_coord,y_coord,w_obj,h_obj,cx,loc):
-        super().__innit__(image, lower_hsv, upper_hsv)
-        super().__innit__(tag,x_coord,y_coord,w_obj,h_obj,cx,loc)
-        
-
-
-    def setBbox(self,mask,min_area,noo,tag,tresh=30):
+    def setBbox(self,tag,mask,frame_w,min_area=100,noo=4,tresh=30):
         """
         input olarak maskeyi alır ve maskedeki alanların en büyük 4 ünden 
         alanı tresholdun üstünde olanların sol üst köşesinin koordinatları ve 
@@ -184,7 +92,7 @@ class Tika(Mask,Bbox):
                 if obj_area > min_area:
                     x, y, w, h = cv2.boundingRect(c)    
                     object = Bbox(tag,x,y,w,h,-1,-1)
-                    object.setLoc(Mask.width,tresh)
+                    object.setLoc(frame_w,tresh)
                     objects.append(object)
 
                 else:
@@ -193,6 +101,7 @@ class Tika(Mask,Bbox):
             print("no contour found")
 
         return objects
+
 
     def closest(objects):
         """
@@ -212,3 +121,84 @@ class Tika(Mask,Bbox):
         else:
             return None
 
+
+    
+
+    
+
+
+
+class Mask:
+    # Mask classı maskeleme için gerekli bilgileri tutar
+    # Mask.masking() maskeyi verir
+    # cap.read() deki aldığın görüntüyü yolla
+    def __init__(self, name, image, lower_hsv, upper_hsv):
+        print("***test***")
+        self.name = name
+        self.lower_hsv = lower_hsv
+        self.upper_hsv = upper_hsv
+        self.image = image
+
+    def getWidth(self):
+        return int(self.image.shape[1])
+
+    def getHeigth(self):
+        return int(self.image.shape[0])
+
+    def getImage(self):
+        return self.image
+
+    def getLowerHsv(self):
+        return self.lower_hsv
+    
+    def getUpperHsv(self):
+        return self.upper_hsv
+
+    def getName(self):
+        return self.name
+
+
+    def setName(self,name):
+        self.name = name
+    
+
+    def setImage(self,image0):
+        #image path
+        self.image = image0
+   
+    def setLowerHsv(self,lowerhsv):
+        self.lower_hsv = lowerhsv
+
+    def setUpperHsv(self, upperhsv):
+        self.upper_hsv = upperhsv
+
+    def masking(self,horizon=4, opening=2,medianFltr=2):
+        """
+        sınır hsv değerleri ile maske çıkarıp 
+        bu maskey opening ve median filter ile sadeleştirme fonskiyonu
+        input olarak -> görüntü , alt sınır , üst sınır
+
+        *kernel değişkeni ve median filterdaki size değişkeni
+        duruma göre değiştirilebilir boyut ne kadar artarsa o kadar yoğun 
+        bir filtreleme yapılır
+        """
+
+        # creating mask
+        hsv = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv, self.lower_hsv, self.upper_hsv)
+        
+        #kameranın konumuna göre yukarı atılcak maskenin boyutunu değiştirbilirsin 
+        cv2.rectangle(mask, (0,0), (self.getWidth(),int(self.getHeigth()/horizon)), (0, 0, 0), -1)
+
+        bitw = cv2.bitwise_and(mask, mask, mask=mask)
+
+        # applying opening operation
+        kernel = np.ones((opening, opening), np.uint8)
+        opening = cv2.morphologyEx(bitw, cv2.MORPH_OPEN, kernel)
+
+        # removing parasites
+        mask_f = ndimage.median_filter(opening, size=medianFltr)
+
+        return mask_f
+
+    
