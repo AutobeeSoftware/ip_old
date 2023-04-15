@@ -32,7 +32,7 @@ a = 0
 ################
 
 # fonskiyonun icine 0 atarak kamerayı aktiflestirebilirsin yoksa istedigin videonun yolunu yaz
-cap = cv2.VideoCapture(gstreamer_pipeline())
+cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("camera failed")
 
@@ -49,7 +49,6 @@ while True:
 
     width = image.shape[1]
     height = image.shape[0]
-
     print(width,height)
 
     #anlık maskeleme yapılıyor
@@ -145,6 +144,7 @@ while True:
     k = cv2.waitKey(1)  
     if k == ord('q'):  
         break
-
+    
+cap.release()
 cv2.destroyAllWindows()
 

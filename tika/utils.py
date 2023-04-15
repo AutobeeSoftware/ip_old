@@ -42,6 +42,7 @@ def bounding_box(mask,tresh,tag):
     alanı tresholdun üstünde olanların sol üst köşesinin koordinatları ve 
     bounding box ın uzunluk ve genişliğini verir aksi halde None verir
     """
+    print(type(mask))
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     params = []
     if len(contours) > 0:
