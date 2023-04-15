@@ -48,19 +48,28 @@ while True:
     ret,frame = cap.read()
     if not ret:
         break
+    
+    frame = cv2.resize(frame, (0, 0), fx = 0.5, fy = 0.5)
+    width = frame.shape[1]
+    height = frame.shape[0]
 
+    print(width,height)
     red = Mask(name = "red",image=frame,lower_hsv=lower_red, upper_hsv=upper_red)
     green = Mask(name = "green",image=frame,lower_hsv=lower_green, upper_hsv=upper_green)
 
+    red_mask = red.masking()
+    green_mask = green.masking()
+    
 
     #intersect filtreleri atiliyor (son 3 framede de ortak olan pikseller aliniyor)
     #bonding box larin parametreleri belirleniyor
-    print(red.getWidth)
-    cv2.imshow("red", red.masking())
 
-    wild_herbs = Bbox.setBbox("red",red.masking(),red.getWidth,30)
-    herbs = Bbox.setBbox("green",green.masking(),green.getWidth,30)
-
+    wild_herbs = Bbox.setBbox("red",red_mask,red.getWidth(),30)
+    herbs = Bbox.setBbox("green",green_mask,green.getWidth(),30)
+    
+    print(len(wild_herbs))
+    print(len(herbs))
+    
     obj_loc = None
 
     if herbs == None and wild_herbs != None:
@@ -85,17 +94,20 @@ while True:
     try:
         #bounding boxlari goruntude ciktisi aliniyor
         for i in herbs:
-            cv2.rectangle(frame, (i.getX,i.getY), (i.getX + i.getW, i.getY + i.getH), (0,255,0), 2)
-            cv2.putText(frame, "herb", (i.getX, i.getY +-15), font, 0.7, (0,255,0), 2)
+            print(i.getTag())
+            cv2.rectangle(frame, (i.getX(),i.getY()), (i.getX() + i.getW(), i.getY() + i.getH()), (0,255,0), 2)
+            cv2.putText(frame, "herb", (i.getX(), i.getY() +-15), font, 0.7, (0,255,0), 2)
 
         for j in wild_herbs:
-            cv2.rectangle(frame, (i.getX,i.getY), (i.getX + i.getW, i.getY + i.getH), (0,0,255), 2)
-            cv2.putText(frame, "wild herb",(i.getX, i.getY +-15), font, 0.7, (0,0,255), 2)
+            print(j.getTag())
+            cv2.rectangle(frame, (i.getX(),i.getY()), (i.getX() + i.getW(), i.getY() + i.getH()), (0,0,255), 2)
+            cv2.putText(frame, "wild herb",(i.getX(), i.getY() +-15), font, 0.7, (0,0,255), 2)
         
         if target != None:
-            cv2.rectangle(frame, (target.getX,target.getY), (i.getX + i.getW, i.getY + i.getH), (255,0,0), 2)
-            cv2.putText(frame, target.getTag, (target.getX, target.getY +-15), font, 0.7, (255,0,0), 2)
-            cv2.putText(frame, target.getLoc, (target.getX, target.getY -40), font, 0.7, (255,0,0), 2)
+            print(target.getTag())
+            cv2.rectangle(frame, (target.getX(),target.getY()), (i.getX() + i.getW(), i.getY() + i.getH()), (255,0,0), 2)
+            cv2.putText(frame, target.getTag(), (target.getX(), target.getY() +-15), font, 0.7, (255,0,0), 2)
+            cv2.putText(frame, target.getLoc(), (target.getX(), target.getY() -40), font, 0.7, (255,0,0), 2)
         
 
     except:
@@ -108,19 +120,28 @@ while True:
     prev_image_time = new_image_time
     fps = int(fps)
     fps = str(fps)
-    cv2.putText(frame, "fps: " + fps, (red.width - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(frame, "fps: " + fps, (red.getWidth() - 100, 25), font, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
     ##########
 
-    cv2.line(frame,(int(red.width/4),0),(int(red.width/4),red.height),(255,0,0),2)
-    cv2.line(frame,(int(red.width*3/4),0),(int(red.width*3/4),red.height),(255,0,0),2)
-    cv2.imshow("frame", frame)
-    cv2.imshow("red", red.masking())
-    cv2.imshow("green", green.masking())
+    cv2.line(frame,(int(red.getWidth()/4),0),(int(red.getWidth()/4),red.getHeigth()),(255,0,0),2)
+    cv2.line(frame,(int(red.getWidth()*3/4),0),(int(red.getWidth()*3/4),red.getHeigth()),(255,0,0),2)
+    
+    red_mask = cv2.merge((red_mask,red_mask,red_mask))
+    green_mask = cv2.merge((green_mask,green_mask,green_mask))
+
+    cv2.putText(frame, "rgb", (int(red.getWidth()/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(red_mask, "mask_red" , (int(red.getWidth()/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(green_mask, "mask_green" , (int(red.getWidth()/2), 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 1, cv2.LINE_AA)
+    
+    im_v = cv2.hconcat([red_mask,frame, green_mask])
+
+    cv2.imshow("Frame", im_v)  # img görüntüsünü gösteriyor
+
 
 
     k = cv2.waitKey(1)  
     if k == ord('q'):  
         break
-
+cap.release()
 cv2.destroyAllWindows()
 

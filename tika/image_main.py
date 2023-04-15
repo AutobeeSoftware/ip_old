@@ -41,14 +41,16 @@ image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/tika/cumulate
 width = image.shape[1]
 heigth = image.shape[0]
 
+print(width, heigth)
+
 
 
 mask_red = masking(image, lower_red, upper_red)
-mask_red = last_turn("sag",mask_red)
+#mask_red = last_turn("sag",mask_red)
 wild_herbs = bounding_box(mask_red,50,"wild herb")
 
 mask_green = masking(image, lower_green, upper_green)
-mask_green = last_turn("sag",mask_green)
+#mask_green = last_turn("sag",mask_green)
 herbs= bounding_box(mask_green,50,"herb")
 
 

@@ -75,30 +75,33 @@ class Bbox():
             self.cx = None
             self.loc = None
 
-    def setBbox(self,tag,mask,frame_w,min_area=100,noo=4,tresh=30):
+    def setBbox(self,tag,mask,frame_w,min_area=20,noo=4,tresh=30):
         """
         input olarak maskeyi alır ve maskedeki alanların en büyük 4 ünden 
         alanı tresholdun üstünde olanların sol üst köşesinin koordinatları ve 
         bounding box ın uzunluk ve genişliğini verir aksi halde None verir
         """
-        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         objects = []
-        if len(contours) > 0:
-            sorted_contours = sorted(contours, key=cv2.contourArea, reverse=True)
+        print(type(mask))
+        if type(mask) == 'numpy.ndarray':
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+            
+            if len(contours) > 0:
+                sorted_contours = sorted(contours, key=cv2.contourArea, reverse=True)
 
-            for c in sorted_contours[:noo]:
-                obj_area = cv2.contourArea(c)
-                
-                if obj_area > min_area:
-                    x, y, w, h = cv2.boundingRect(c)    
-                    object = Bbox(tag,x,y,w,h,-1,-1)
-                    object.setLoc(frame_w,tresh)
-                    objects.append(object)
+                for c in sorted_contours[:noo]:
+                    obj_area = cv2.contourArea(c)
+                    
+                    if obj_area > min_area:
+                        x, y, w, h = cv2.boundingRect(c)    
+                        object = Bbox(tag,x,y,w,h,-1,-1)
+                        object.setLoc(frame_w,tresh)
+                        objects.append(object)
 
-                else:
-                    print("no object found bigger than treshold")
-        else:
-            print("no contour found")
+                    else:
+                        print("no object found bigger than treshold")
+            else:
+                print("no contour found")
 
         return objects
 
@@ -133,7 +136,6 @@ class Mask:
     # Mask.masking() maskeyi verir
     # cap.read() deki aldığın görüntüyü yolla
     def __init__(self, name, image, lower_hsv, upper_hsv):
-        print("***test***")
         self.name = name
         self.lower_hsv = lower_hsv
         self.upper_hsv = upper_hsv
