@@ -57,7 +57,7 @@ class Bbox():
         """
         
         if self.x_coord != None:
-            self.cx = self.x_coord + int(frame_w/2)
+            self.cx = self.x_coord + int(w_obj/2)
             
             if self.cx<int(frame_w/2-tresh):
                 print("on the left")
