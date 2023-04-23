@@ -34,6 +34,7 @@ while True:
                 #### cikti ekle
 
     cv2.imshow("result", image)
+    cv2.imshow("mask", mask)
     k = cv2.waitKey(1)
     if k == ord("q"):
         break

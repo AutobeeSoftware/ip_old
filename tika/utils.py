@@ -3,7 +3,7 @@ import numpy as np
 from scipy import ndimage
 import time
 
-def masking(img, lower_hsv, upper_hsv):
+def masking(img, lower_hsv, upper_hsv, opening_kernel = 2, medianF_tresh = 2, horizon_tresh = 0):
     """
     sınır hsv değerleri ile maske çıkarıp 
     bu maskey opening ve median filter ile sadeleştirme fonskiyonu
@@ -15,23 +15,23 @@ def masking(img, lower_hsv, upper_hsv):
     """
     
     width = img.shape[1]
-    height = img.shape[0]
 
     # creating mask
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
     
     #kameranın konumuna göre yukarı atılcak maskenin boyutunu değiştirbilirsin 
-    cv2.rectangle(mask, (0,0), (width,int(height/4)), (0, 0, 0), -1)
+    if horizon_tresh > 0 :
+        cv2.rectangle(mask, (0,0), (width,horizon_tresh), (0, 0, 0), -1)
 
     bitw = cv2.bitwise_and(mask, mask, mask=mask)
 
     # applying opening operation
-    kernel = np.ones((2, 2), np.uint8)
+    kernel = np.ones((opening_kernel, opening_kernel), np.uint8)
     opening = cv2.morphologyEx(bitw, cv2.MORPH_OPEN, kernel)
 
     # removing parasites
-    mask_f = ndimage.median_filter(opening, size=2)
+    mask_f = ndimage.median_filter(opening, size=medianF_tresh)
 
     return mask_f
 
@@ -42,7 +42,6 @@ def bounding_box(mask,tresh,tag):
     alanı tresholdun üstünde olanların sol üst köşesinin koordinatları ve 
     bounding box ın uzunluk ve genişliğini verir aksi halde None verir
     """
-    print(type(mask))
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     params = []
     if len(contours) > 0:
