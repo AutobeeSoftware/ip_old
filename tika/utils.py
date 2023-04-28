@@ -49,6 +49,7 @@ def bounding_box(mask,tresh,tag):
 
         for c in sorted_contours[:4]:
             obj_area = cv2.contourArea(c)
+            print(obj_area)
             
             if obj_area > tresh:
                 x, y, w, h = cv2.boundingRect(c)
