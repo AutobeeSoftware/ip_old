@@ -146,8 +146,8 @@ def closest(params):
     ind = None
     for index,object in enumerate(params):
         (x,y),(w,h),tag = object
-        if cache < y:
-            cache = y
+        if cache < w*h:
+            cache = w*h
             ind = index
         else:
             continue

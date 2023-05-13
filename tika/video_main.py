@@ -20,8 +20,8 @@ lower_red = np.array([0,56,116])
 upper_red = np.array([20,255,255])
 
 
-
-
+lower_white = np.array([0,0,214])
+upper_white = np.array([255,21,255])
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -36,9 +36,6 @@ cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("camera failed")
 
-#intersect fonksiyonu icin son 3 maskeyi tutuyo
-red_mask_cache=[]
-green_mask_cache=[]
 
 while True:
     ret,image = cap.read()
@@ -53,28 +50,42 @@ while True:
 
     #anlık maskeleme yapılıyor
     mask_red = masking(image, lower_red, upper_red)
-    red_mask_cache.append(mask_red)
-
     mask_green = masking(image, lower_green, upper_green)
-    green_mask_cache.append(mask_green)
+    mask_white = masking(image, lower_white, upper_white)
 
-    #cache arraylari belli bir boyutta tutuyor
-    if len(red_mask_cache) > 3:
-        red_mask_cache.pop(0)
-        green_mask_cache.pop(0)
-    else:
-        continue
-    
+
     #intersect filtreleri atiliyor (son 3 framede de ortak olan pikseller aliniyor)
     #bonding box larin parametreleri belirleniyor
 
-    red_inter = intersect(red_mask_cache[0],red_mask_cache[1],red_mask_cache[2])
-    wild_herbs = bounding_box(red_inter,50,"wild herb")
+    wild_herbs = bounding_box(mask_green,100,"wild herb")
+    herbs = bounding_box(mask_red,100,"herb")
+    mermer = bounding_box(mask_white,200,"mermer")
+    
+    if mermer != None :
+        print(mermer)
+        for ind,obj in enumerate(mermer):
+            (x, y), (w, h),tag = obj
+            cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
 
-    green_inter = intersect(green_mask_cache[0],green_mask_cache[1],green_mask_cache[2])
-    herbs = bounding_box(green_inter,50,"herb")
+            if w/h < 2:
+                mermer.pop(ind)
+                print("no obj")
+                
+            elif y > height*0.5 :
+                cv2.rectangle(image, (x,y), (x+w,y+h), (0,0,0), 2)
+                cv2.putText(image, "STOP!", (int((x/2)+w),int((h/2)+y)), font, 0.7, (0,0,255), 2)
+                ###########
+                #ros
+                print("STOP!")
+
+            else:
+                mermer.pop(ind)
+                print("no obj")
+
+
 
     obj_loc = None
+    nearest = None
 
     if herbs == None and wild_herbs != None:
         combined = wild_herbs
@@ -98,25 +109,36 @@ while True:
 
     if obj_loc != None:
         cx, cx_string = obj_loc
+        (x,y), (w,h), tag = nearest
+
+
     # imshow yapilmiyosa gereksiz
     try:
-        #bounding boxlari goruntude ciktisi aliniyor
+            #bounding boxlari goruntude ciktisi aliniyor
+        
         for i in herbs:
-            cv2.rectangle(image, i[0], list(map(add, i[0], i[1])), (0,255,0), 2)
+            cv2.rectangle(image, i[0], tuple(map(add, i[0], i[1])), (0,255,0), 2)
             cv2.putText(image, "herb", (i[0][0], i[0][1] +-15), font, 0.7, (0,255,0), 2)
-
-        for j in wild_herbs:
-            cv2.rectangle(image, j[0],list(map(add, j[0], j[1])), (0,0,255), 2)
-            cv2.putText(image, "wild herb",(j[0][0], j[0][1] - 15),font, 0.7, (0,0,255), 2)
-        
-        if nearest != None:
-            cv2.rectangle(image, nearest[0], list(map(add, nearest[0], nearest[1])), (255,0,0), 2)
-            cv2.putText(image, nearest[2], (nearest[0][0], nearest[0][1] -15), font, 0.7, (255,0,0), 2)
-            cv2.putText(image, cx_string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
-        
 
     except:
         pass
+    
+    try:
+        
+        for j in wild_herbs:
+            cv2.rectangle(image, j[0],tuple(map(add, j[0], j[1])), (0,0,255), 2)
+            cv2.putText(image, "wild herb",(j[0][0], j[0][1] - 15),font, 0.7, (0,0,255), 2)
+        
+    except:
+        pass
+    
+    if nearest != None:
+        print(nearest[0])
+        print( list(map(add, nearest[0], nearest[1])))
+        cv2.rectangle(image, nearest[0], tuple(map(add, nearest[0], nearest[1])), (255,0,0), 2)
+        cv2.putText(image, nearest[2], (nearest[0][0], nearest[0][1] -15), font, 0.7, (255,0,0), 2)
+        cv2.putText(image, cx_string, (nearest[0][0], nearest[0][1] -40), font, 0.7, (255,0,0), 2)
+        
 
 
     ### fps icin ##
@@ -140,6 +162,7 @@ while True:
     
     im_v = cv2.hconcat([mask_red,image, mask_green])
     cv2.imshow("Frame", im_v)  # img görüntüsünü gösteriyor
+    cv2.imshow("mask",mask_white)
 
     k = cv2.waitKey(1)  
     if k == ord('q'):  

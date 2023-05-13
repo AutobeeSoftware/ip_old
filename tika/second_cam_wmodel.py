@@ -39,8 +39,8 @@ net = imageNet(model="model/resnet18.onnx", labels="model/labels.txt",
                  input_blob="input_0", output_blob="output_0")
 
 # create video sources & outputs
-input = videoSource("csi//:")
-output = videoOutput("display//:")
+input = videoSource("csi://0")
+output = videoOutput("display://0")
 font = cudaFont()
 
 # process frames until EOS or the user exits
