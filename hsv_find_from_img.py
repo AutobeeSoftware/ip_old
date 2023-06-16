@@ -18,7 +18,7 @@ plt.hist(val, bins=255)
 plt.show()
 """
 
-img = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/NJORD/stage.jpeg")
+img = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/NJORD/black.jpeg")
 
 width = img.shape[1]
 heigth = img.shape[0]

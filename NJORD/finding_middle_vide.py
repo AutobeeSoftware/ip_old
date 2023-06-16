@@ -31,6 +31,8 @@ upper_green = np.array([130,255,255])
 lower_yellow = np.array([14, 0, 0])
 upper_yellow = np.array([36,255,119])
 
+lower_black = np.array([0, 0, 0])
+upper_black = np.array([0,0,7])
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
@@ -47,6 +49,8 @@ while True:
     if not ret:
         break
     
+    #image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
+
 
     mask_red = masking(image, lower_red, upper_red, opening_kernel = 0, medianF_tresh = 0)
     reds = bounding_box(mask_red,1,"red")
@@ -66,12 +70,22 @@ while True:
 
     print("^^^^^^^^^^^^^^^")
 
+    mask_black = masking(image, lower_black, upper_black, opening_kernel = 0, medianF_tresh = 0)
+    blacks= bounding_box(mask_black,1,"black")
+    print(blacks)
+
+    print("^^^^^^^^^^^^^^^")
 
 
-    middle = between_buoys(greens,reds)
+    middle = between_buoys(greens,reds) #closest middle point
 
-
+    ##for visualising##
     try:
+        if middle[1] == True:
+            
+            cv2.circle(image, middle[0], int(middle[2]*0.1), (255,255,255), 2)
+        else:
+            cv2.circle(image, middle[0],  int(middle[2]*0.1), (0,0,0), 2)
 
         for i in greens:
             radius = int( math.sqrt(i[1] / math.pi))
@@ -90,12 +104,13 @@ while True:
             cv2.circle(image, k[0], radius, (0,255,255), 2)
             cv2.putText(image, "yellow", (k[0][0], k[0][1] - 15), font, 0.7, (0,255,255), 2)
         
-        if middle[1] == True:
-            
-            cv2.circle(image, middle[0], int(middle[2]*0.1), (255,255,255), 2)
-        else:
-            cv2.circle(image, middle[0],  int(middle[2]*0.1), (0,0,0), 2)
-
+        for z in blacks:
+        
+            radius = int( math.sqrt(z[1] / math.pi))
+            cv2.circle(image, z[0], radius, (0,255,255), 2)
+            cv2.putText(image, "black", (z[0][0], z[0][1] - 15), font, 0.7, (0,255,255), 2)
+        
+       
         
     except:
         pass
@@ -116,7 +131,7 @@ while True:
     if k == ord('q'):  
         break
     
-
+    ########
 cap.release()
 cv2.destroyAllWindows()
 
