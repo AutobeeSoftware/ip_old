@@ -2,29 +2,30 @@ import cv2
 import numpy as np
 from scipy import ndimage
 import time
+import math
 
-def masking(img, lower_hsv, upper_hsv):
-
+def masking(img, lower_hsv, upper_hsv, opening_kernel = 2, medianF_tresh = 2, horizon_tresh = 0):
     width = img.shape[1]
-    height = img.shape[0]
 
     # creating mask
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
     
-    cv2.rectangle(mask, (0,0), (width,int(height/4)), (0, 0, 0), -1)
+    if horizon_tresh > 0 :
+        cv2.rectangle(mask, (0,0), (width,horizon_tresh), (0, 0, 0), -1)
 
-    bitw = cv2.bitwise_and(mask, mask, mask=mask)
+    mask = cv2.bitwise_and(mask, mask, mask=mask)
 
-    # applying opening operation
-    kernel = np.ones((2, 2), np.uint8)
-    opening = cv2.morphologyEx(bitw, cv2.MORPH_OPEN, kernel)
-
+    if opening_kernel > 0:
+        # applying opening operation
+        kernel = np.ones((opening_kernel, opening_kernel), np.uint8)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    
+    if medianF_tresh > 0:
     # removing parasites
-    mask_f = ndimage.median_filter(opening, size=2)
+        mask = ndimage.median_filter(mask, size=medianF_tresh)
 
-    return mask_f
-
+    return mask
 
 def bounding_box(mask,tresh,tag):
 
@@ -38,7 +39,7 @@ def bounding_box(mask,tresh,tag):
             
             if obj_area > tresh:
                 x, y, w, h = cv2.boundingRect(c)
-                params.append([(int((x+w)/2), int((y+h)/2)),tag])
+                params.append([(x+int(w/2), y+int(h/2)),obj_area,tag])
 
             else:
                 print("no object found bigger than treshold")
@@ -61,7 +62,7 @@ def intersect(mask1,mask2,mask3):
 def is_center(params,width,tresh):
 
     if params != None:
-        (cx,cy),tag = params
+        (cx,cy),area,tag = params
         if cx<int(width/2-tresh):
             print("on the left")
             cx_string = "left"
@@ -97,20 +98,23 @@ def last_turn(lastTurnDir,mask):
     return mask
 
 def closest(params):
-
-    cache = 0
-    ind = None
-    for index,object in enumerate(params):
-        (cx,cy),tag = object
-        if cache < cy:
-            cache = cy
-            ind = index
-        else:
-            continue
-    if ind != None:
-        return params[ind]
+    if params != None:
+        cache = 0
+        ind = None
+        for index,object in enumerate(params):
+            (cx,cy), area, tag = object
+            if cache < cy:
+                cache = cy
+                ind = index
+            else:
+                continue
+        if ind != None:
+            return params[ind]
     else:
         return None
+
+
+
 
 def gstreamer_pipeline(
     sensor_id=0,
@@ -142,3 +146,44 @@ def gstreamer_pipeline(
             display_height,
         )
     )
+
+def between_buoys(objs1, objs2): # iki dubanın ortasını bulan fonksiyon
+    ccx = 0
+    ccy = 0
+    isForward = None
+    distence=0
+
+    center_of_obj1 = closest(objs1)
+    center_of_obj2 = closest(objs2)
+
+    if center_of_obj1 != None  and  center_of_obj2 != None:
+        (cx1,cy1), area1, tag1 = center_of_obj1
+        (cx2,cy2), area2, tag2 = center_of_obj2
+
+        ccx = int((cx1 + cx2)/2)
+        ccy = int((cy1 + cy2)/2)
+        distence = int(math.sqrt((cx1-cx2)**2 + (cy1 - cy2)**2))
+
+        if cx1 > cx2:
+            isForward = True
+        else:
+            isForward = False
+    
+    elif center_of_obj1 == None  and  center_of_obj2 != None:
+        (cx2,cy2), area2, tag2 = center_of_obj2
+        ccx = cx2
+        ccy = cy2
+        print(f"no object{tag2}")
+
+    elif center_of_obj1 != None  and  center_of_obj2 == None:
+        (cx1,cy1), area1, tag1 = center_of_obj1
+        ccx = cx1
+        ccy = cy1
+        print(f"no object{tag1}")
+    else:
+        
+        print("no objects")
+
+    return [(ccx,ccy),isForward,distence]
+   
+
