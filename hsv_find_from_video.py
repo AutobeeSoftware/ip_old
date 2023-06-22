@@ -77,8 +77,7 @@ while True:  # sürekli kamerayı okutur
     width = image.shape[1]
     heigth = image.shape[0]
 
-    #hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    hsv=image 
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     hue_min = cv2.getTrackbarPos("hue_min", "TrackBar")
     hue_max = cv2.getTrackbarPos("hue_max", "TrackBar")
     sat_min = cv2.getTrackbarPos("sat_min", "TrackBar")
