@@ -4,11 +4,11 @@ from scipy import ndimage
 import time
 import math
 
-def masking(img, lower_hsv, upper_hsv, opening_kernel = 2, medianF_tresh = 2, horizon_tresh = 0):
-    width = img.shape[1]
+def masking(hsv, lower_hsv, upper_hsv, opening_kernel = 2, medianF_tresh = 2, horizon_tresh = 0):
+    width = hsv.shape[1]
 
     # creating mask
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    #hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
     
     if horizon_tresh > 0 :
@@ -147,7 +147,8 @@ def gstreamer_pipeline(
         )
     )
 
-def between_buoys(objs1, objs2): # iki dubanın ortasını bulan fonksiyon
+def between_buoys(objs1, objs2): 
+    # objs1 should on the rigth side
     ccx = 0
     ccy = 0
     isForward = None
@@ -173,13 +174,13 @@ def between_buoys(objs1, objs2): # iki dubanın ortasını bulan fonksiyon
         (cx2,cy2), area2, tag2 = center_of_obj2
         ccx = cx2
         ccy = cy2
-        print(f"no object{tag2}")
+        print(f"no object: {tag2}")
 
     elif center_of_obj1 != None  and  center_of_obj2 == None:
         (cx1,cy1), area1, tag1 = center_of_obj1
         ccx = cx1
         ccy = cy1
-        print(f"no object{tag1}")
+        print(f"no object: {tag1}")
     else:
         
         print("no objects")

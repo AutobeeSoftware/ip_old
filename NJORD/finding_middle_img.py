@@ -35,27 +35,28 @@ heigth = image.shape[0]
 
 print(width, heigth)
 
+hsv_frame = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
 
-mask_red = masking(image, lower_red, upper_red, opening_kernel = 0, medianF_tresh = 0)
+mask_red = masking(hsv_frame, lower_red, upper_red, opening_kernel = 0, medianF_tresh = 0)
 reds = bounding_box(mask_red,1,"red")
 print(reds)
 print("#####################")
 
-mask_green = masking(image, lower_green, upper_green, opening_kernel = 0, medianF_tresh = 0)
+mask_green = masking(hsv_frame, lower_green, upper_green, opening_kernel = 0, medianF_tresh = 0)
 greens= bounding_box(mask_green,1,"green")
 print(greens)
 
 print("*****************")
 
 
-mask_yellow = masking(image, lower_yellow, upper_yellow, opening_kernel = 0, medianF_tresh = 0)
+mask_yellow = masking(hsv_frame, lower_yellow, upper_yellow, opening_kernel = 0, medianF_tresh = 0)
 yellows= bounding_box(mask_yellow,1,"yellow")
 print(yellows)
 
 print("^^^^^^^^^^^^^^^")
 
-mask_black = masking(image, lower_black, upper_black, opening_kernel = 0, medianF_tresh = 0)
+mask_black = masking(hsv_frame, lower_black, upper_black, opening_kernel = 0, medianF_tresh = 0)
 blacks= bounding_box(mask_black,1,"black")
 print(blacks)
 
