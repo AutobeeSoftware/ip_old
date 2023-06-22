@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from scipy import ndimage
-import time
 import math
 
 def masking(hsv, lower_hsv, upper_hsv, opening_kernel = 2, medianF_tresh = 2, horizon_tresh = 0):
