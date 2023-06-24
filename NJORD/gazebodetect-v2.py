@@ -11,6 +11,7 @@ from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import Twist
 from rover.msg import ball_location
 import utils2
+import math
 
 class TakePhoto:
     def __init__(self):
@@ -151,15 +152,61 @@ class TakePhoto:
             self.cx_b = 0
             self.cy_b = 0
 
-        
+        middle = utils2.between_buoys(reds,greens)
+
         print("Cx red: ",self.cx_r)
         print("Cx green: ", self.cx_g)
         print("Cx yellow: ", self.cx_y)
         print("Cx Black: ", self.cx_b)
-        cv2.imshow("window", img)
-        cv2.waitKey(1)
 
-        middle = utils2.between_buoys(reds,greens)
+##for visualising##
+        font = cv2.FONT_HERSHEY_SIMPLEX
+
+        try:
+            if middle[1] == True: 
+                cv2.circle(img, middle[0], int(middle[2]*0.05), (255,255,255), 2)
+            else:
+                cv2.circle(img, middle[0],  int(middle[2]*0.05), (0,0,0), 2)
+
+
+            for i in greens:
+                radius = int( math.sqrt(i[1] / math.pi))
+                cv2.circle(img, i[0], radius, (0,255,0), 2)
+                cv2.putText(img, "green", (i[0][0], i[0][1] - 15), img, 0.7, (0,255,0), 2)
+            
+            for j in reds:
+                
+                radius = int( math.sqrt(j[1] / math.pi))
+                cv2.circle(img, j[0], radius, (0,0,255), 2)
+                cv2.putText(img, "red", (j[0][0], j[0][1] - 15), font, 0.7, (0,0,255), 2)
+            
+            for k in yellows:
+                
+                radius = int( math.sqrt(k[1] / math.pi))
+                cv2.circle(img, k[0], radius, (0,255,255), 2)
+                cv2.putText(img, "yellow", (k[0][0], k[0][1] - 15), font, 0.7, (0,255,255), 2)
+            
+            for z in blacks:
+                
+                radius = int( math.sqrt(z[1] / math.pi))
+                cv2.circle(img, z[0], radius, (0,255,255), 2)
+                cv2.putText(img, "black", (z[0][0], z[0][1] - 15), font, 0.7, (0,255,255), 2)
+            
+            
+        except:
+            pass
+
+
+        cv2.imshow("Image", img)
+        cv2.imshow("yellow", mask_frame_yellow)
+        cv2.imshow("green", mask_frame_green)
+        cv2.imshow("red", mask_frame_red)
+        cv2.imshow("black", mask_frame_black)
+
+        cv2.waitKey(1)
+        ########
+        
+
         obj_x = middle[0][0]-width
         ball.middle= obj_x
         ball.black_location = self.cx_b
@@ -169,6 +216,9 @@ class TakePhoto:
         ball.isyellowfound  = True if self.cx_y > 0 else False
         ball.isblackfound  = True if self.cx_b > 0 else False
         self.pub.publish(ball)
+
+
+
 
 if __name__ == '__main__':
 
