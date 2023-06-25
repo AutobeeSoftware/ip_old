@@ -1,22 +1,9 @@
 import cv2
 import numpy as np
-#from scipy import ndimage
-import matplotlib.pyplot as plt
 from utils import gstreamer_pipeline
 
 
 
-"""
-# histogram grafiği ile görüntüdeki hsv değerleri analiz edilebilir
-hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
-hue = list(np.concatenate(hsv[:,:,0]).flat)
-sat = list(np.concatenate(hsv[:,:,1]).flat)
-val = list(np.concatenate(hsv[:,:,2]).flat)
-
-plt.hist(val, bins=255)
-plt.show()
-"""
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
