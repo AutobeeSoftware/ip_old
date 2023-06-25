@@ -32,7 +32,7 @@ def bounding_box(mask,tresh,tag):
     params = []
     if len(contours) > 0:
         sorted_contours = sorted(contours, key=cv2.contourArea, reverse=True)
-
+        
         for c in sorted_contours[:4]:
             obj_area = cv2.contourArea(c)
             
@@ -41,15 +41,16 @@ def bounding_box(mask,tresh,tag):
                 params.append([(x+int(w/2), y+int(h/2)),obj_area,tag])
 
             else:
-                print("no object found bigger than treshold")
+                print("this object not bigger than treshold")
                 
        
         print("next frame")
-        return params
+        
 
+    if len(params) > 0:
+        return params
     else:
-        print("no contour found")
-        return None
+        return None 
 
 
 def intersect(mask1,mask2,mask3):
