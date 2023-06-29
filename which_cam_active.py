@@ -19,6 +19,6 @@ while True:
 
     cv2.imshow("cam1", frame1)
     cv2.imshow("cam2", frame2)
-    cv2.waitKey(5)
+    cv2.waitKey(1)
 
 cv2.destroyAllWindows()
