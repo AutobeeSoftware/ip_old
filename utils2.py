@@ -188,3 +188,23 @@ def between_buoys(objs1, objs2):
     return [(ccx,ccy),isForward,distence]
    
 
+
+def camCombine(frameL,frameR,overlap):
+    # İki kameradan alınan kareleri aynı boyuta getiriyoruz
+   
+    if frameL.shape[0] == frameR.shape[0] and frameL.shape[1] == frameR.shape[1]:
+        h = frameL.shape[0]
+        w = frameR.shape[1]
+        frameL = frameL[:h, : w - overlap] 
+        frameR = frameR[:h, overlap :]
+
+        # İki kareyi yatay olarak birleştiriyoruz
+        combined_frame = np.hstack((frameL, frameR))
+
+
+        return combined_frame
+
+    else:
+        return None
+
+
