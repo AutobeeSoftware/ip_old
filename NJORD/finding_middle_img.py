@@ -2,16 +2,14 @@ import cv2
 import numpy as np
 import sys
 import os
+import math
 
 # Add the parent folder path to the system's import path
 sys.path.append(os.path.abspath('../IP_general'))
 
-from utils2 import masking,bounding_box, between_buoys
-import math
+from utils2 import masking,bounding_box, between_buoys , camera2lidar
 
-
-
-image = cv2.imread("/Users/emirysaglam/Documents/GitHub/IP_general/NJORD/stage.jpeg")
+image = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/NJORD/stage.jpeg")
 #image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
 
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -64,6 +62,7 @@ print("^^^^^^^^^^^^^^^")
 
 
 
+
 middle = between_buoys(greens,reds) #closest middle point
 print(middle)
 
@@ -96,9 +95,56 @@ try:
         
         radius = int( math.sqrt(z[1] / math.pi))
         cv2.circle(image, z[0], radius, (0,255,255), 2)
-        cv2.putText(image, "black", (z[0][0], z[0][1] - 15), font, 0.7, (0,255,255), 2)
+        cv2.putText(image, "black", (z[0][0], z[0][1] - 15), font, 0.7, (0,0,0), 2)
     
     
+except:
+    pass
+
+
+
+
+shift = int((270-60)/2)
+ratio = 60/width 
+
+try:
+    testr = camera2lidar(width,60,reds)
+    for i,o in enumerate(testr):
+        if o != 0:
+            ind = i - shift
+            cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 255), 1)
+            cv2.line(image, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+except:
+    pass
+
+try:
+    testg = camera2lidar(width,60,greens)
+    for i,o in enumerate(testg):
+
+        if o != 0:
+            ind = i - shift
+            cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 255, 0), 1)
+            cv2.line(image, (int((ind+1)//ratio),0 ), (int((ind+1)//ratio), heigth), (0, 255, 0), 1)
+except:
+    pass
+
+try:
+    testy = camera2lidar(width,60,yellows)
+    for i,o in enumerate(testy):
+        if o != 0:        
+            ind = i - shift
+            cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 255, 255), 1)
+            cv2.line(image, (int((ind+1)//ratio),0 ), (int((ind+1)//ratio), heigth), (0, 255, 255), 1)
+except:
+    pass
+
+try:
+    testb = camera2lidar(width,60,blacks)
+    for i,o in enumerate(testb):
+        if o != 0:
+            ind = i - shift       
+            cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 0), 1)
+            cv2.line(image, (int((ind+1)//ratio),0 ), (int((ind+1)//ratio), heigth), (0, 0, 0), 1)
 except:
     pass
 
