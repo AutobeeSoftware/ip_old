@@ -207,4 +207,24 @@ def camCombine(frameL,frameR,overlap):
     else:
         return None
 
+def camera2lidar(width, fov,detections):
+    if detections != None:
+        output = [0 for i in range(270)] 
+        shift = int((270-fov)/2)
+        ratio = fov/width 
 
+        for i in detections:
+            (cx, cy), area, id = i
+            
+            radius =  int(math.pow(area/3,0.5))
+            start = int((cx - radius) * ratio)
+            end = int((cx + radius) * ratio)
+            print("start ,end , radius")
+            print(start,end,radius)
+            
+            for j in range(shift+start,shift+end+1):
+                output[j] = id
+                
+        return output
+    else:
+        return None

@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath('../IP_general'))
 
 from utils2 import masking,bounding_box, between_buoys , camera2lidar
 
-image = cv2.imread("C:/Users/ertug/Documents/GitHub/IP_general/NJORD/stage.jpeg")
+image = cv2.imread("/Users/emirysaglam/GitHub/IP_general/NJORD/stage.jpeg")
 #image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
 
 font = cv2.FONT_HERSHEY_SIMPLEX
