@@ -3,6 +3,12 @@ import numpy as np
 import sys
 import os
 import math
+import time
+
+### fps icin ###
+prev_image_time = time.time()
+
+################
 
 # Add the parent folder path to the system's import path
 sys.path.append(os.path.abspath('../IP_general'))
@@ -107,6 +113,39 @@ except:
 shift = int((270-60)/2)
 ratio = 60/width 
 
+
+
+
+
+colors = [] 
+
+if reds != None:
+    colors += reds
+if yellows != None:
+    colors += yellows
+if greens != None:
+    colors += greens
+if blacks != None:
+    colors += blacks
+
+
+
+print("*************************")
+testr = camera2lidar(width,60,colors)
+print(testr)
+try:
+    testr = camera2lidar(width,60,colors)
+    print(testr)
+    for i,o in enumerate(testr):
+        if o != 0:
+            ind = i - shift
+            cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 255), 1)
+            cv2.line(image, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+except:
+    pass
+
+
+"""
 try:
     testr = camera2lidar(width,60,reds)
     for i,o in enumerate(testr):
@@ -148,7 +187,11 @@ try:
 except:
     pass
 
+"""
 
+new_image_time = time.time()
+fps = new_image_time - prev_image_time
+print(fps)
 cv2.imshow("Image", image)
 cv2.imshow("red", mask_red)
 cv2.imshow("green", mask_green)
