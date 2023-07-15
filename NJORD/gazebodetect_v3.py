@@ -14,7 +14,7 @@ from geometry_msgs.msg import Twist
 from ball_detection_pck.msg import ball_location
 import utils2
 import math
-import CSI_Camera
+from CSI_Camera import CSI_Camera
 
 class TakePhoto:
     def __init__(self):
@@ -57,7 +57,8 @@ class TakePhoto:
         
         """
     def find_object(self):
-        cap=cv2.VideoCapture(utils2.gstreamer_pipeline())#cv2.VideoCapture(0)
+        #cap=cv2.VideoCapture(utils2.gstreamer_pipeline())
+        cap=cv2.VideoCapture(0)
         while not rospy.is_shutdown():
             _,img=cap.read()
             ball= ball_location()
@@ -125,7 +126,7 @@ class TakePhoto:
             blacks = utils2.bounding_box(mask_frame_black,100,"black")       
             cv2.imshow("mask_black",mask_frame_black)
              #----------black>
-    
+    	
             X_r,Y_r,W_r,H_r=0,0,0,0
             X_b,Y_b,W_b,H_b=0,0,0,0
             X_g,Y_g,W_g,H_g=0,0,0,0
@@ -160,16 +161,23 @@ class TakePhoto:
                 self.cy_b = 0.0
     
             middle = utils2.between_buoys(reds,greens)
-    
+            """
+        
+                
+    	    
             print("Cx red: ",self.cx_r)
             print("Cx green: ", self.cx_g)
             print("Cx yellow: ", self.cx_y)
             print("Cx Black: ", self.cx_b)
             print("middle:",middle)
-    
-    ##for visualising##
+            """
+            #print(colors)
+            #position = utils2.camera2lidar(640,60,colors)
+            #print(position)
+            
+            ##for visualising##
             font = cv2.FONT_HERSHEY_SIMPLEX
-    
+            
             try:
                 if middle[1] == True: 
                     cv2.circle(img, middle[0], int(middle[2]*0.05), (255,255,255), 2)
@@ -213,8 +221,56 @@ class TakePhoto:
                 
             except:
                 pass
-    
-    
+            
+            
+            
+            
+            print("*************************")
+            shift = int((270-60)/2)
+            ratio = 60/width 
+
+
+            colors = [] 
+
+            if reds != None:
+                colors += reds
+            if yellows != None:
+                colors += yellows
+            if greens != None:
+                colors += greens
+            if blacks != None:
+                colors += blacks
+
+
+
+            print("*************************")
+            testr = utils2.camera2lidar(width,60,colors)
+            print(testr)
+            try:
+                testr = utils2.camera2lidar(width,60,colors)
+                print(testr)
+                for i,o in enumerate(testr):
+                    if o != 0:
+                        if o == "red":
+                            ind = i - shift
+                            cv2.line(img, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 255), 1)
+                            cv2.line(img, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                        if o == "green":
+                            ind = i - shift
+                            cv2.line(img, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 255, 0), 1)
+                            cv2.line(img, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                        if o == "yellow":
+                            ind = i - shift
+                            cv2.line(img, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 255, 255), 1)
+                            cv2.line(img, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                        if o == "black":
+                            ind = i - shift
+                            cv2.line(img, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 0), 1)
+                            cv2.line(img, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                        
+            except:
+                pass
+
             cv2.imshow("Image", img)
     
     
@@ -224,6 +280,7 @@ class TakePhoto:
     
             obj_x = middle[0][0]-width/2
             ball.middle= obj_x
+            
             try:   
                 ball.black_location = blacks[0][0][0]
             except:
@@ -232,11 +289,12 @@ class TakePhoto:
                 ball.yellow_location = yellows[0][0][0]
             except:
                 ball.yellow_location = self.cx_y
-    
+            
+            #print("-----------------", blacks[0][2])
             ball.isredfound  = True if self.cx_r > 0.0 else False
             ball.isgreenfound  = True if self.cx_g > 0.0 else False
-            ball.isyellowfound  = False # if self.cx_y > 0.0 else False
-            ball.isblackfound  = False #if self.cx_b > 0.0 else False
+            ball.isyellowfound  = True if self.cx_y > 0.0 else False
+            ball.isblackfound  = True if self.cx_b > 0.0 else False
             self.pub.publish(ball)
 
     def find_object_2cam(self):
@@ -272,10 +330,10 @@ class TakePhoto:
                 print((width,heigth))
                 
         
-                low_H_R=0
-                low_S_R=92
-                low_V_R=127
-                high_H_R=10
+                low_H_R=136
+                low_S_R=56
+                low_V_R=78
+                high_H_R=255
                 high_S_R=255
                 high_V_R=255
         
@@ -288,10 +346,10 @@ class TakePhoto:
                 high_S_B=35
                 high_V_B=174
                 
-                low_H_G = 46 #53
-                low_S_G= 56#87
-                low_V_G=106#59
-                high_H_G=73#130
+                low_H_G = 71 #53
+                low_S_G= 75#87
+                low_V_G=38#59
+                high_H_G=91#130
                 high_S_G=255
                 high_V_G=255
         
@@ -355,19 +413,19 @@ class TakePhoto:
         
                 try:
                     self.cx_b = blacks[0][0]
-                    self.cy_b = blacks[0][0]
+                    self.cy_b = blacks[0][1]
                 except:
                     self.cx_b = 0.0
                     self.cy_b = 0.0
         
                 middle = utils2.between_buoys(reds,greens)
         
-                print("Cx red: ",self.cx_r)
-                print("Cx green: ", self.cx_g)
-                print("Cx yellow: ", self.cx_y)
-                print("Cx Black: ", self.cx_b)
-                print("middle:",middle)
-        
+                #print("Cx red: ",self.cx_r)
+                #print("Cx green: ", self.cx_g)
+                #print("Cx yellow: ", self.cx_y)
+                #print("Cx Black: ", self.cx_b)
+                #print("middle:",middle)
+		print("Width: ", img.shape[1])
         ##for visualising##
                 font = cv2.FONT_HERSHEY_SIMPLEX
         
@@ -422,7 +480,7 @@ class TakePhoto:
                 cv2.waitKey(30)
                 ########
         
-        
+            
                 obj_x = middle[0][0]-width/2
                 ball.middle= obj_x
                 try:   
@@ -452,7 +510,7 @@ if __name__ == '__main__':
     bag.write("lidar", LaserScan)
     """	
     camera = TakePhoto()
-    camera.find_object_2cam()
+    camera.find_object()
     
     while not rospy.is_shutdown():
         rospy.sleep(0.1)

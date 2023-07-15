@@ -8,7 +8,7 @@ import time
 # Add the parent folder path to the system's import path
 sys.path.append(os.path.abspath('../IP_general'))
 
-from utils2 import masking,bounding_box, between_buoys
+from utils2 import masking,bounding_box, between_buoys, camera2lidar
 import math
 
 ### fps icin ###
@@ -49,36 +49,34 @@ while True:
     if not ret:
         break
     
-    #image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
+    image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
 
     hsv_frame = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
+    print("######### red ########")
     mask_red = masking(hsv_frame, lower_red, upper_red, opening_kernel = 0, medianF_tresh = 0)
-    reds = bounding_box(mask_red,1,"red")
+    reds = bounding_box(mask_red,100,"red")
     print(reds)
-    print("#####################")
 
+    print("******* green *********")
     mask_green = masking(hsv_frame, lower_green, upper_green, opening_kernel = 0, medianF_tresh = 0)
-    greens= bounding_box(mask_green,1,"green")
+    greens= bounding_box(mask_green,100,"green")
     print(greens)
 
-    print("*****************")
 
-
+    print("^^^^^^ yellow ^^^^^^^")
     mask_yellow= masking(hsv_frame, lower_yellow, upper_yellow, opening_kernel = 0, medianF_tresh = 0)
-    yellows= bounding_box(mask_yellow,1,"yellow")
+    yellows= bounding_box(mask_yellow,100,"yellow")
     print(yellows)
 
-    print("^^^^^^^^^^^^^^^")
-
+    print(":::::::: black ::::::")
     mask_black = masking(hsv_frame, lower_black, upper_black, opening_kernel = 0, medianF_tresh = 0)
-    blacks= bounding_box(mask_black,1,"black")
+    blacks= bounding_box(mask_black,100,"black")
     print(blacks)
 
-    print("^^^^^^^^^^^^^^^")
 
-    if greens != None and reds!= None:
-        middle = between_buoys(greens,reds) #closest middle point
+    
+    middle = between_buoys(greens,reds) #closest middle point
 
     ##for visualising##
     try:
@@ -110,11 +108,62 @@ while True:
             radius = int( math.sqrt(z[1] / math.pi))
             cv2.circle(image, z[0], radius, (0,255,255), 2)
             cv2.putText(image, "black", (z[0][0], z[0][1] - 15), font, 0.7, (0,255,255), 2)
-        
-       
+    
         
     except:
         pass
+
+    
+
+    shift = int((270-60)/2)
+    ratio = 60/width 
+
+
+    colors = [] 
+
+    if reds != None:
+        colors += reds
+    if yellows != None:
+        colors += yellows
+    if greens != None:
+        colors += greens
+    if blacks != None:
+        colors += blacks
+
+
+
+    print("*************************")
+    testr = camera2lidar(width,60,colors)
+    print(testr)
+    try:
+        testr = camera2lidar(width,60,colors)
+        print(testr)
+        for i,o in enumerate(testr):
+            if o != 0:
+                if o == "red":
+                    ind = i - shift
+                    cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 255), 1)
+                    cv2.line(image, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                if o == "green":
+                    ind = i - shift
+                    cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 255, 0), 1)
+                    cv2.line(image, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                if o == "yellow":
+                    ind = i - shift
+                    cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 255, 255), 1)
+                    cv2.line(image, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                if o == "black":
+                    ind = i - shift
+                    cv2.line(image, (int(ind//ratio),0 ), (int(ind//ratio), heigth), (0, 0, 0), 1)
+                    cv2.line(image, (int((ind+1)//ratio),0 ),(int((ind+1)//ratio), heigth), (0, 0, 255), 1)
+                
+    except:
+        pass
+
+
+
+
+
 
     ### fps icin ##
     new_image_time = time.time()
@@ -126,7 +175,10 @@ while True:
     ##########
 
     cv2.imshow("Image", image)
-
+    cv2.imshow("b", mask_black)
+    cv2.imshow("r", mask_red)
+    cv2.imshow("g", mask_green)
+    cv2.imshow("y", mask_yellow)
 
     k = cv2.waitKey(1)  
     if k == ord('q'):  
